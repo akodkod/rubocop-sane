@@ -1,0 +1,22 @@
+Sane:
+  Enabled: true
+  DocumentationBaseURL: https://github.com/akodkod/rubocop-sane
+
+Sane/DisallowMethods:
+  Description: "Enforces method replacements and prohibitions."
+  Enabled: true
+  VersionAdded: "0.1.0"
+  SafeAutoCorrect: false
+  ReplaceMethods: {}
+  ProhibitedMethods: {}
+
+Sane/ConditionalAssignmentAllowTernary:
+  Description: "Enforces assignment inside conditions, but allows ternary operators."
+  Enabled: true
+  VersionAdded: "0.1.0"
+
+Sane/EmptyLinesAroundMultilineBlock:
+  Description: "Enforces empty lines before and after multiline blocks."
+  Enabled: true
+  VersionAdded: "0.1.0"
+  SafeAutoCorrect: true

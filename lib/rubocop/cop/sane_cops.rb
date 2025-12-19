@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+require_relative "sane/disallow_methods"
+require_relative "sane/conditional_assignment_allow_ternary"
+require_relative "sane/empty_lines_around_multiline_block"
