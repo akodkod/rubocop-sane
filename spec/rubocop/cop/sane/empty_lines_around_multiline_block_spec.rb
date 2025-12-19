@@ -690,4 +690,526 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
   end
+
+  context "with operator assignment blocks" do
+    it "does not register offense for ||= assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result ||= items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for &&= assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result &&= items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for += assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result += items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with instance/class/global variable assignment" do
+    it "does not register offense for instance variable assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        @result = items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for class variable assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        @@result = items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for global variable assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        $result = items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for constant assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        RESULT = items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for multiple assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        a, b = items.map do |item|
+          item.upcase
+        end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with if assignment variants" do
+    it "does not register offense for instance variable if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        @result = if condition
+                    1
+                  else
+                    2
+                  end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for class variable if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        @@result = if condition
+                     1
+                   else
+                     2
+                   end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for global variable if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        $result = if condition
+                    1
+                  else
+                    2
+                  end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for constant if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        RESULT = if condition
+                   1
+                 else
+                   2
+                 end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for multiple if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        a, b = if condition
+                 [1, 2]
+               else
+                 [3, 4]
+               end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for ||= if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result ||= if condition
+                     1
+                   else
+                     2
+                   end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for &&= if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result &&= if condition
+                     1
+                   else
+                     2
+                   end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for += if assignment" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result += if condition
+                    1
+                  else
+                    2
+                  end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with multiline block in method arguments" do
+    it "does not register offense for block in method call" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        method_call(items.map do |item|
+          item.upcase
+        end)
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with numblock lambda" do
+    it "does not register offense for numblock lambda" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        my_proc = -> do
+          _1 + _2
+        end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "when block is multiline but single line" do
+    it "does not register offense for multiline case that fits one line" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result = case value; when :a then 1; end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with blocks having no parents" do
+    it "handles top-level if block" do
+      expect_no_offenses(<<~RUBY)
+        if condition
+          foo
+        else
+          bar
+        end
+      RUBY
+    end
+
+    it "handles top-level block" do
+      expect_no_offenses(<<~RUBY)
+        items.each do |item|
+          process(item)
+        end
+      RUBY
+    end
+  end
+
+  context "with rescue body containing multiple statements" do
+    it "requires blank line around block in rescue with siblings" do
+      expect_offense(<<~RUBY)
+        begin
+          something
+        rescue
+          log_error
+          if condition
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            handle_one
+          else
+            handle_other
+          end
+          ^^^ Add empty line after multiline `if` block.
+          cleanup
+        end
+      RUBY
+    end
+  end
+
+  context "with when body containing multiple statements" do
+    it "requires blank line around block in when with siblings" do
+      expect_offense(<<~RUBY)
+        case value
+        when :a
+          setup
+          if condition
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            foo
+          else
+            bar
+          end
+          ^^^ Add empty line after multiline `if` block.
+          teardown
+        end
+      RUBY
+    end
+  end
+
+  context "with case else containing multiple statements" do
+    it "requires blank line around block in case else with siblings" do
+      expect_offense(<<~RUBY)
+        case value
+        when :a
+          something
+        else
+          setup
+          if condition
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            foo
+          else
+            bar
+          end
+          ^^^ Add empty line after multiline `if` block.
+          teardown
+        end
+      RUBY
+    end
+  end
+
+  context "with if branch containing multiple statements" do
+    it "requires blank line around nested block" do
+      expect_offense(<<~RUBY)
+        if outer
+          setup
+          if inner
+          ^^^^^^^^ Add empty line before multiline `if` block.
+            foo
+          else
+            bar
+          end
+          ^^^ Add empty line after multiline `if` block.
+          teardown
+        end
+      RUBY
+    end
+  end
+
+  context "with else branch containing multiple statements" do
+    it "requires blank line around nested block" do
+      expect_offense(<<~RUBY)
+        if outer
+          something
+        else
+          setup
+          if inner
+          ^^^^^^^^ Add empty line before multiline `if` block.
+            foo
+          else
+            bar
+          end
+          ^^^ Add empty line after multiline `if` block.
+          teardown
+        end
+      RUBY
+    end
+  end
+
+  context "with block body containing multiple statements" do
+    it "requires blank line around nested block" do
+      expect_offense(<<~RUBY)
+        outer.each do |item|
+          setup(item)
+          if condition
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            process(item)
+          else
+            skip(item)
+          end
+          ^^^ Add empty line after multiline `if` block.
+          cleanup(item)
+        end
+      RUBY
+    end
+  end
+
+  context "with class method body containing multiple statements" do
+    it "requires blank line around block" do
+      expect_offense(<<~RUBY)
+        def self.foo
+          setup
+          if condition
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            bar
+          else
+            baz
+          end
+          ^^^ Add empty line after multiline `if` block.
+          cleanup
+        end
+      RUBY
+    end
+  end
+
+  context "with method body containing multiple statements" do
+    it "requires blank line around block in method" do
+      expect_offense(<<~RUBY)
+        def foo
+          setup
+          if condition
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            bar
+          else
+            baz
+          end
+          ^^^ Add empty line after multiline `if` block.
+          cleanup
+        end
+      RUBY
+    end
+  end
+
+  context "when comment is on first line of file" do
+    it "does not require blank line at first line" do
+      expect_no_offenses(<<~RUBY)
+        # Comment on first line
+        if condition
+          foo
+        else
+          bar
+        end
+      RUBY
+    end
+  end
+
+  context "with lambda that is not part of assignment" do
+    it "does not register offense for standalone lambda" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        my_lambda = -> do
+          puts "hello"
+        end
+        baz = qux
+      RUBY
+    end
+
+    it "does not register offense for lambda with explicit block" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result = lambda do
+          calculate_something
+        end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "when prev_sibling returns nil" do
+    it "handles block as first expression in program" do
+      expect_no_offenses(<<~RUBY)
+        if condition
+          foo
+        else
+          bar
+        end
+      RUBY
+    end
+  end
+
+  context "when next_sibling returns nil" do
+    it "handles block as last expression in program" do
+      expect_no_offenses(<<~RUBY)
+        foo
+
+        if condition
+          bar
+        else
+          baz
+        end
+      RUBY
+    end
+  end
+
+  context "with multiline if without else" do
+    it "registers offense for if without else" do
+      expect_offense(<<~RUBY)
+        foo = bar
+        if condition
+        ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          baz
+          qux
+        end
+        ^^^ Add empty line after multiline `if` block.
+        quux = corge
+      RUBY
+    end
+  end
+
+  context "with empty line already between siblings" do
+    it "does not register offense when properly spaced" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+
+        if condition
+          baz
+        else
+          qux
+        end
+
+        quux = corge
+      RUBY
+    end
+  end
+
+  context "with single-line case" do
+    it "does not register offense for single-line case" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        result = case x; when 1 then "a"; when 2 then "b"; end
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with multiline numblock" do
+    it "handles numblock without explicit params" do
+      expect_offense(<<~RUBY)
+        foo = bar
+        [1, 2, 3].map do
+        ^^^^^^^^^^^^^^^^ Add empty line before multiline `do...end` block.
+          _1 * 2
+        end
+        ^^^ Add empty line after multiline `do...end` block.
+        baz = qux
+      RUBY
+    end
+  end
+
+  context "with blocks without location info" do
+    it "handles complex nested structures" do
+      expect_no_offenses(<<~RUBY)
+        class Foo
+          def bar
+            items.each do |item|
+              if item.valid?
+                process(item)
+              else
+                skip(item)
+              end
+            end
+          end
+        end
+      RUBY
+    end
+  end
 end

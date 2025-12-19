@@ -195,4 +195,48 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
       RUBY
     end
   end
+
+  context "with operator assignment to case" do
+    it "registers an offense for += case" do
+      expect_offense(<<~RUBY)
+        foo += case bar
+        ^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+               when :a then 1
+               when :b then 2
+               end
+      RUBY
+    end
+
+    it "registers an offense for ||= case" do
+      expect_offense(<<~RUBY)
+        foo ||= case bar
+        ^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+                when :a then 1
+                when :b then 2
+                end
+      RUBY
+    end
+
+    it "registers an offense for &&= case" do
+      expect_offense(<<~RUBY)
+        foo &&= case bar
+        ^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+                when :a then 1
+                when :b then 2
+                end
+      RUBY
+    end
+  end
+
+  context "with namespaced constant assignment to case" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        Foo::BAR = case baz
+        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+                   when :a then 1
+                   when :b then 2
+                   end
+      RUBY
+    end
+  end
 end
