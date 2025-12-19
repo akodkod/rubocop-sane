@@ -120,6 +120,24 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
         end
       RUBY
     end
+
+    it "does not register offense for decorated method def" do
+      expect_no_offenses(<<~RUBY)
+        memoize def foo
+          # Method comment
+          bar
+        end
+      RUBY
+    end
+
+    it "does not register offense for private def" do
+      expect_no_offenses(<<~RUBY)
+        private def foo
+          # Method comment
+          bar
+        end
+      RUBY
+    end
   end
 
   context "when after control structure start" do
@@ -222,6 +240,15 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
           # Comment inside block
           process(item)
         }
+      RUBY
+    end
+
+    it "does not register offense after array start" do
+      expect_no_offenses(<<~RUBY)
+        PROCESSORS = [
+          # OKLAHOMA
+          { name: "oklahoma" },
+        ]
       RUBY
     end
   end
@@ -348,6 +375,34 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
         first_line
         second_line # This is an inline comment
         third_line
+      RUBY
+    end
+  end
+
+  context "with rubocop directives" do
+    it "does not register offense for rubocop:disable" do
+      expect_no_offenses(<<~RUBY)
+        foo = 1
+        # rubocop:disable Performance/MapCompact
+        bar = 2
+        # rubocop:enable Performance/MapCompact
+      RUBY
+    end
+
+    it "does not register offense for rubocop:enable" do
+      expect_no_offenses(<<~RUBY)
+        # rubocop:disable Performance/MapCompact
+        responses = items.map { |i| i&.value }.compact
+        # rubocop:enable Performance/MapCompact
+        other_code
+      RUBY
+    end
+
+    it "does not register offense for rubocop:todo" do
+      expect_no_offenses(<<~RUBY)
+        foo = 1
+        # rubocop:todo Style/FrozenStringLiteralComment
+        bar = 2
       RUBY
     end
   end

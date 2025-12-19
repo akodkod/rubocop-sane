@@ -48,6 +48,7 @@ module RuboCop
         private
 
         def check_comment(comment)
+          return if rubocop_directive?(comment)
           return if inline_comment?(comment)
           return if first_line?(comment)
           return if preceded_by_empty_line?(comment)
@@ -62,6 +63,10 @@ module RuboCop
               "\n",
             )
           end
+        end
+
+        def rubocop_directive?(comment)
+          comment.text.match?(/\A#\s*rubocop:(enable|disable|todo)\b/)
         end
 
         def inline_comment?(comment)
@@ -106,26 +111,26 @@ module RuboCop
         def block_start_pattern?(line)
           stripped = line.strip
 
-          # Class, module, method definitions
-          return true if stripped.match?(/\A(class|module|def)\s/)
+          # Class, module, method definitions (including decorated methods like `memoize def`)
+          return true if stripped.match?(/\A(class|module)\s/) || stripped.match?(/\bdef\s/)
 
           # Control structures
-          return true if stripped.match?(/\A(if|unless|case|while|until|for|begin)\s/)
-          return true if stripped == "begin"
+          return true if stripped.match?(/\A(if|unless|case|while|until|for|begin)\b/)
 
           # Block openers (do or {)
-          return true if stripped.end_with?(" do", " do |", "\tdo")
-          return true if stripped.match?(/do\s*\|[^|]*\|\s*\z/)
-          return true if stripped.end_with?("{")
-          return true if stripped.match?(/\{\s*\|[^|]*\|\s*\z/)
+          return true if block_opener?(stripped)
 
           # Rescue/ensure/else/elsif/when inside blocks
           return true if stripped.match?(/\A(rescue|ensure|else|elsif|when)\b/)
 
           # Private/protected/public access modifiers
-          return true if stripped.match?(/\A(private|protected|public)\s*\z/)
+          stripped.match?(/\A(private|protected|public)\s*\z/)
+        end
 
-          false
+        def block_opener?(line)
+          line.end_with?(" do", " do |", "\tdo", "{", "[") ||
+            line.match?(/do\s*\|[^|]*\|\s*\z/) ||
+            line.match?(/\{\s*\|[^|]*\|\s*\z/)
         end
       end
     end
