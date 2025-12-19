@@ -50,7 +50,8 @@ All cops live under `lib/rubocop/cop/sane/` and follow RuboCop's cop pattern:
 
 1. **DisallowMethods** - Configurable cop for method replacements and prohibitions with auto-correct
 2. **ConditionalAssignmentAllowTernary** - Enforces assignment inside conditions but allows ternary operators
-3. **EmptyLinesAroundMultilineBlock** - Enforces empty lines around multiline if/case/block statements
+3. **EmptyLineBeforeComment** - Requires blank line before comments (except after block starts, class/method definitions, etc.)
+4. **EmptyLinesAroundMultilineBlock** - Enforces empty lines around multiline if/case/block statements
 
 ### Testing
 

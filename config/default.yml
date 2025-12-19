@@ -15,6 +15,12 @@ Sane/ConditionalAssignmentAllowTernary:
   Enabled: true
   VersionAdded: "0.1.0"
 
+Sane/EmptyLineBeforeComment:
+  Description: "Enforces empty line before comments, except after block starts."
+  Enabled: true
+  VersionAdded: "0.1.0"
+  SafeAutoCorrect: true
+
 Sane/EmptyLinesAroundMultilineBlock:
   Description: "Enforces empty lines before and after multiline blocks."
   Enabled: true
