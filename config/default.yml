@@ -26,3 +26,8 @@ Sane/EmptyLinesAroundMultilineBlock:
   Enabled: true
   VersionAdded: "0.1.0"
   SafeAutoCorrect: true
+
+Sane/NoMethodCallAfterEnd:
+  Description: "Prohibits calling methods directly after `end`."
+  Enabled: true
+  VersionAdded: "0.1.0"

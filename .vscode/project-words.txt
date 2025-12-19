@@ -1,1 +1,6 @@
+bindir
+Kodkod
+numblock
+popen
+readlines
 RuboCop

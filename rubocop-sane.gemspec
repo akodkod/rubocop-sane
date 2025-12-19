@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["678665+akodkod@users.noreply.github.com"]
 
   spec.summary = "Sane RuboCop cops for modern Ruby development"
-  spec.description = "A collection of RuboCop cops that enforce sensible coding conventions."
+  spec.description = "A collection of RuboCop cops that enforce sensible coding conventions"
   spec.homepage = "https://github.com/akodkod/rubocop-sane"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.2.0"
