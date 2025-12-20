@@ -329,22 +329,42 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
   end
 
   context "when block is part of assignment" do
-    it "does not register offense for direct assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for direct assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         result = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
+        baz = qux
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo = bar
+        result = items.map do |item|
+          item.upcase
+        end
+
         baz = qux
       RUBY
     end
 
-    it "does not register offense for setter assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for setter assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         self.values = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
+        baz = qux
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo = bar
+        self.values = items.map do |item|
+          item.upcase
+        end
+
         baz = qux
       RUBY
     end
@@ -366,6 +386,42 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
                  item.upcase
                end]
         baz = qux
+      RUBY
+    end
+
+    it "registers offense for each_with_object block followed by code" do
+      expect_offense(<<~RUBY)
+        messages = errors.each_with_object([]) do |(key, values), arr|
+          if key == :base
+            arr << values.join(", ")
+          else
+            arr << key.to_s
+          end
+        end
+        ^^^ Add empty line after multiline `do...end` block.
+        messages.join(". ")
+      RUBY
+
+      expect_correction(<<~RUBY)
+        messages = errors.each_with_object([]) do |(key, values), arr|
+          if key == :base
+            arr << values.join(", ")
+          else
+            arr << key.to_s
+          end
+        end
+
+        messages.join(". ")
+      RUBY
+    end
+
+    it "does not register offense when assignment block is last expression" do
+      expect_no_offenses(<<~RUBY)
+        def foo
+          messages = errors.each_with_object([]) do |(key, values), arr|
+            arr << key.to_s
+          end
+        end
       RUBY
     end
   end
@@ -692,84 +748,92 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
   end
 
   context "with operator assignment blocks" do
-    it "does not register offense for ||= assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for ||= assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         result ||= items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
 
-    it "does not register offense for &&= assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for &&= assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         result &&= items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
 
-    it "does not register offense for += assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for += assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         result += items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
   end
 
   context "with instance/class/global variable assignment" do
-    it "does not register offense for instance variable assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for instance variable assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         @result = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
 
-    it "does not register offense for class variable assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for class variable assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         @@result = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
 
-    it "does not register offense for global variable assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for global variable assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         $result = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
 
-    it "does not register offense for constant assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for constant assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         RESULT = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
 
-    it "does not register offense for multiple assignment" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for multiple assignment followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         a, b = items.map do |item|
           item.upcase
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end
@@ -1103,12 +1167,13 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
 
-    it "does not register offense for lambda with explicit block" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense for lambda with explicit block followed by code" do
+      expect_offense(<<~RUBY)
         foo = bar
         result = lambda do
           calculate_something
         end
+        ^^^ Add empty line after multiline `do...end` block.
         baz = qux
       RUBY
     end

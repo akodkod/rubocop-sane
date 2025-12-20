@@ -99,11 +99,19 @@ module RuboCop
 
         def on_block(node)
           return unless multiline?(node)
-          return if chained_block?(node) # e.g., expect { ... }.to raise_error
+          return if method_chain_block?(node) # e.g., expect { ... }.to raise_error
           return if lambda_block?(node) # e.g., -> { ... } or -> do ... end
+          return if block_in_collection?(node) # e.g., [items.map do...end] or {key: items.map do...end}
 
-          check_empty_line_before(node)
-          check_empty_line_after(node)
+          assignment_parent = find_assignment_parent(node)
+          if assignment_parent
+            # Don't require blank line before assignment
+            # But do check for blank line after the assignment
+            check_empty_line_after_assignment(node, assignment_parent)
+          else
+            check_empty_line_before(node)
+            check_empty_line_after(node)
+          end
         end
 
         alias on_numblock on_block
@@ -112,37 +120,50 @@ module RuboCop
           node.send_node&.lambda_literal?
         end
 
-        def chained_block?(node)
+        def method_chain_block?(node)
           # Skip blocks that are part of a method chain
           # e.g., expect { ... }.to raise_error
           # e.g., foo.map { ... }&.join (csend is safe navigation &.)
           parent = node.parent
-          return true if (parent&.send_type? || parent&.csend_type?) && parent.receiver == node
-
-          # Skip blocks that are part of an assignment expression
-          # e.g., self.foo = items.map do ... end
-          return true if part_of_assignment?(node)
-
-          false
+          (parent&.send_type? || parent&.csend_type?) && parent.receiver == node
         end
 
-        def part_of_assignment?(node)
+        def block_in_collection?(node)
+          # Skip blocks that are in arrays or hashes (enclosed in a structure)
           parent = node.parent
           return false unless parent
 
+          parent.array_type? || parent.pair_type?
+        end
+
+        def find_assignment_parent(node)
+          parent = node.parent
+          return nil unless parent
+
           # Direct assignment: foo = bar.map do...end
-          return true if assignment_node?(parent)
+          return parent if assignment_node?(parent)
 
           # Assignment via setter: self.foo = bar.map do...end
-          return true if parent.send_type? && parent.method_name.to_s.end_with?("=")
+          return parent if parent.send_type? && parent.method_name.to_s.end_with?("=")
 
-          # Hash value: { key: items.map do...end }
-          return true if parent.pair_type?
+          nil
+        end
 
-          # Array element: [items.map do...end]
-          return true if parent.array_type?
+        def check_empty_line_after_assignment(block_node, assignment_node)
+          return if last_child_of_parent?(assignment_node)
+          return if followed_by_rescue?(assignment_node)
 
-          false
+          next_sib = next_sibling(assignment_node)
+          return unless next_sib
+          return if next_sib.is_a?(Symbol)
+          return if empty_line_between?(assignment_node, next_sib)
+          return if comment_line_after?(block_node)
+
+          keyword = block_keyword(block_node)
+
+          add_offense(block_node.loc.end, message: format(MSG_AFTER, keyword: keyword)) do |corrector|
+            corrector.insert_after(block_node, "\n")
+          end
         end
 
         def assignment_node?(node)
