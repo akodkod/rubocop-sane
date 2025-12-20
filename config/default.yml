@@ -31,3 +31,8 @@ Sane/NoMethodCallAfterEnd:
   Description: "Prohibits calling methods directly after `end`."
   Enabled: true
   VersionAdded: "0.1.0"
+
+Sane/OutdatedComments:
+  Description: "Detects TODO/NOTE/FIXME comments with dates in the past."
+  Enabled: true
+  VersionAdded: "0.2.0"
