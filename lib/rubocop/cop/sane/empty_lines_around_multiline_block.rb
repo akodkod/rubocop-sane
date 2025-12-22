@@ -6,6 +6,9 @@ module RuboCop
       # This cop enforces empty lines before and after multiline blocks
       # such as `if/else` and `case/when`.
       #
+      # Sorbet `sig` blocks require a blank line before, but not after,
+      # since they should be tightly coupled to their method definitions.
+      #
       # @example
       #   # bad
       #   work_for = data.work_done_for
@@ -47,6 +50,16 @@ module RuboCop
       #     else
       #       qux
       #     end
+      #   end
+      #
+      #   # good - Sorbet sig blocks don't need blank line after
+      #   something
+      #
+      #   sig do
+      #     params(x: Integer).returns(String)
+      #   end
+      #   def foo(x)
+      #     x.to_s
       #   end
       #
       class EmptyLinesAroundMultilineBlock < Base
@@ -108,6 +121,9 @@ module RuboCop
             # Don't require blank line before assignment
             # But do check for blank line after the assignment
             check_empty_line_after_assignment(node, assignment_parent)
+          elsif sig_block?(node)
+            # Sorbet sig blocks: require blank line before, but not after
+            check_empty_line_before(node)
           else
             check_empty_line_before(node)
             check_empty_line_after(node)
@@ -118,6 +134,11 @@ module RuboCop
 
         def lambda_block?(node)
           node.send_node&.lambda_literal?
+        end
+
+        def sig_block?(node)
+          # Sorbet signature blocks: sig { ... } or sig do ... end
+          node.send_node&.method_name == :sig && node.send_node&.receiver.nil?
         end
 
         def method_chain_block?(node)

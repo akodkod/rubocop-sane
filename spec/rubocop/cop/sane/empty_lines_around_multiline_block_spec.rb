@@ -244,6 +244,93 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
     end
   end
 
+  context "with Sorbet sig blocks" do
+    it "does not require blank line after sig block" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+
+        sig do
+          params(x: Integer)
+            .returns(String)
+        end
+        def foo(x)
+          x.to_s
+        end
+      RUBY
+    end
+
+    it "does not require blank line after sig with type_parameters" do
+      expect_no_offenses(<<~RUBY)
+        something
+
+        sig do
+          type_parameters(:T)
+            .params(struct: T.class_of(T::Struct))
+            .returns(T.type_parameter(:T))
+        end
+        def parse_params(struct)
+          struct.deserialize_from(json: params.to_unsafe_h)
+        end
+      RUBY
+    end
+
+    it "requires blank line before sig block" do
+      expect_offense(<<~RUBY)
+        foo = bar
+        sig do
+        ^^^^^^ Add empty line before multiline `do...end` block.
+          params(x: Integer)
+            .returns(String)
+        end
+        def foo(x)
+          x.to_s
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo = bar
+
+        sig do
+          params(x: Integer)
+            .returns(String)
+        end
+        def foo(x)
+          x.to_s
+        end
+      RUBY
+    end
+
+    it "does not require blank line before sig at start of class body" do
+      expect_no_offenses(<<~RUBY)
+        class MyService
+          sig do
+            params(name: String)
+              .returns(User)
+          end
+          def create_user(name)
+            User.create(name: name)
+          end
+        end
+      RUBY
+    end
+
+    it "requires blank line before sig after other code in class" do
+      expect_offense(<<~RUBY)
+        class MyService
+          some_code
+          sig do
+          ^^^^^^ Add empty line before multiline `do...end` block.
+            params(name: String)
+              .returns(User)
+          end
+          def create_user(name)
+            User.create(name: name)
+          end
+        end
+      RUBY
+    end
+  end
+
   context "with lambda blocks" do
     it "does not register offense for lambda" do
       expect_no_offenses(<<~RUBY)
