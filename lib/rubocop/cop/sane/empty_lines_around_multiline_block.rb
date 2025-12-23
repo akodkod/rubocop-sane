@@ -313,6 +313,9 @@ module RuboCop
           return true if parent.type == :def && parent.body == node
           return true if parent.type == :defs && parent.body == node
           return true if parent.type == :resbody && parent.body == node
+          return true if parent.type == :class && parent.body == node
+          return true if parent.type == :module && parent.body == node
+          return true if parent.type == :sclass && parent.body == node
 
           # For if/unless, check if node is the only thing in the if-branch or else-branch
           if parent.type == :if

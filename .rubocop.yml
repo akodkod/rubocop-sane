@@ -62,7 +62,7 @@ Naming/PredicatePrefix:
   Enabled: false
 
 RSpec/ExampleLength:
-  Max: 20
+  Max: 30
 
 RSpec/MultipleDescribes:
   Enabled: false

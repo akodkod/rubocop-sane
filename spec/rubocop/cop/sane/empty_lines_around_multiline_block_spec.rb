@@ -1364,4 +1364,48 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
   end
+
+  context "when only child in class/module body" do
+    it "does not require blank line when block is only child in class" do
+      expect_no_offenses(<<~RUBY)
+        class ExtractDataId < T::Enum
+          enums do
+            IndianaEmailParser = new("indiana-email-parser")
+          end
+        end
+      RUBY
+    end
+
+    it "does not require blank line when block is only child in module" do
+      expect_no_offenses(<<~RUBY)
+        module MyModule
+          setup do
+            configure_something
+          end
+        end
+      RUBY
+    end
+
+    it "does not require blank line when block is only child in singleton class" do
+      expect_no_offenses(<<~RUBY)
+        class << self
+          define_method(:foo) do
+            bar
+          end
+        end
+      RUBY
+    end
+
+    it "requires blank line when block has siblings in class" do
+      expect_offense(<<~RUBY)
+        class MyClass
+          attr_reader :foo
+          setup do
+          ^^^^^^^^ Add empty line before multiline `do...end` block.
+            configure
+          end
+        end
+      RUBY
+    end
+  end
 end
