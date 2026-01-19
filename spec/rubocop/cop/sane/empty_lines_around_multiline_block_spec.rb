@@ -1408,4 +1408,204 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
   end
+
+  context "with begin...rescue...end blocks" do
+    it "registers offense for missing blank line before begin" do
+      expect_offense(<<~RUBY)
+        temp_file = Tempfile.new(["import", ".csv"])
+        begin
+        ^^^^^ Add empty line before multiline `begin` block.
+          temp_file.write(data)
+        rescue IOError
+          handle_error
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        temp_file = Tempfile.new(["import", ".csv"])
+
+        begin
+          temp_file.write(data)
+        rescue IOError
+          handle_error
+        end
+      RUBY
+    end
+
+    it "registers offense for missing blank line after begin" do
+      expect_offense(<<~RUBY)
+        begin
+          risky_operation
+        rescue => e
+          handle_error(e)
+        end
+        ^^^ Add empty line after multiline `begin` block.
+        next_statement
+      RUBY
+
+      expect_correction(<<~RUBY)
+        begin
+          risky_operation
+        rescue => e
+          handle_error(e)
+        end
+
+        next_statement
+      RUBY
+    end
+
+    it "registers offense for missing blank lines before and after begin" do
+      expect_offense(<<~RUBY)
+        setup_code
+        begin
+        ^^^^^ Add empty line before multiline `begin` block.
+          risky_operation
+        rescue => e
+          handle_error(e)
+        end
+        ^^^ Add empty line after multiline `begin` block.
+        cleanup_code
+      RUBY
+    end
+
+    it "does not require blank line at beginning of method" do
+      expect_no_offenses(<<~RUBY)
+        def foo
+          begin
+            risky_operation
+          rescue => e
+            handle_error(e)
+          end
+
+          other_code
+        end
+      RUBY
+    end
+
+    it "does not require blank line at end of method" do
+      expect_no_offenses(<<~RUBY)
+        def foo
+          setup_code
+
+          begin
+            risky_operation
+          rescue => e
+            handle_error(e)
+          end
+        end
+      RUBY
+    end
+
+    it "does not require blank line when only child in method" do
+      expect_no_offenses(<<~RUBY)
+        def foo
+          begin
+            risky_operation
+          rescue => e
+            handle_error(e)
+          end
+        end
+      RUBY
+    end
+
+    it "does not register offense when blank lines exist" do
+      expect_no_offenses(<<~RUBY)
+        temp_file = Tempfile.new(["import", ".csv"])
+
+        begin
+          temp_file.write(data)
+        rescue IOError
+          handle_error
+        end
+
+        next_statement
+      RUBY
+    end
+
+    it "handles begin with ensure clause" do
+      expect_offense(<<~RUBY)
+        setup_code
+        begin
+        ^^^^^ Add empty line before multiline `begin` block.
+          risky_operation
+        ensure
+          cleanup
+        end
+        ^^^ Add empty line after multiline `begin` block.
+        next_code
+      RUBY
+    end
+
+    it "handles begin with rescue and ensure" do
+      expect_offense(<<~RUBY)
+        setup_code
+        begin
+        ^^^^^ Add empty line before multiline `begin` block.
+          risky_operation
+        rescue => e
+          handle_error(e)
+        ensure
+          cleanup
+        end
+        ^^^ Add empty line after multiline `begin` block.
+        next_code
+      RUBY
+    end
+
+    it "does not require blank line when comment precedes begin" do
+      expect_no_offenses(<<~RUBY)
+        setup_code
+        # This is a comment
+        begin
+          risky_operation
+        rescue => e
+          handle_error(e)
+        end
+      RUBY
+    end
+
+    it "does not require blank line when comment follows begin" do
+      expect_no_offenses(<<~RUBY)
+        begin
+          risky_operation
+        rescue => e
+          handle_error(e)
+        end
+        # This is a comment
+        next_code
+      RUBY
+    end
+
+    it "handles nested begin blocks" do
+      expect_no_offenses(<<~RUBY)
+        def foo
+          begin
+            begin
+              inner_operation
+            rescue InnerError
+              handle_inner
+            end
+          rescue OuterError
+            handle_outer
+          end
+        end
+      RUBY
+    end
+
+    it "requires blank line around begin in method with siblings" do
+      expect_offense(<<~RUBY)
+        def foo
+          setup
+          begin
+          ^^^^^ Add empty line before multiline `begin` block.
+            risky_operation
+          rescue => e
+            handle_error(e)
+          end
+          ^^^ Add empty line after multiline `begin` block.
+          cleanup
+        end
+      RUBY
+    end
+  end
 end

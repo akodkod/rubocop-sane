@@ -4,7 +4,7 @@ module RuboCop
   module Cop
     module Sane
       # This cop enforces empty lines before and after multiline blocks
-      # such as `if/else` and `case/when`.
+      # such as `if/else`, `case/when`, and `begin...rescue...end`.
       #
       # Sorbet `sig` blocks require a blank line before, but not after,
       # since they should be tightly coupled to their method definitions.
@@ -62,6 +62,23 @@ module RuboCop
       #     x.to_s
       #   end
       #
+      #   # bad - missing blank line before begin
+      #   temp_file = Tempfile.new(["import", ".csv"])
+      #   begin
+      #     temp_file.write(data)
+      #   rescue IOError
+      #     handle_error
+      #   end
+      #
+      #   # good - blank line before begin
+      #   temp_file = Tempfile.new(["import", ".csv"])
+      #
+      #   begin
+      #     temp_file.write(data)
+      #   rescue IOError
+      #     handle_error
+      #   end
+      #
       class EmptyLinesAroundMultilineBlock < Base
         extend AutoCorrector
 
@@ -109,6 +126,13 @@ module RuboCop
         end
 
         alias on_case_match on_case
+
+        def on_kwbegin(node)
+          return unless multiline?(node)
+
+          check_empty_line_before(node)
+          check_empty_line_after(node)
+        end
 
         def on_block(node)
           return unless multiline?(node)
@@ -238,6 +262,8 @@ module RuboCop
             node.keyword
           elsif node.case_type? || node.case_match_type?
             "case"
+          elsif node.kwbegin_type?
+            "begin"
           elsif node.block_type? || node.numblock_type?
             "do...end"
           else
