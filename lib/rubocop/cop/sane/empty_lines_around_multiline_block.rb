@@ -202,7 +202,7 @@ module RuboCop
           return unless next_sib
           return if next_sib.is_a?(Symbol)
           return if empty_line_between?(assignment_node, next_sib)
-          return if comment_line_after?(block_node)
+          return if rubocop_directive_after?(block_node)
 
           keyword = block_keyword(block_node)
 
@@ -302,7 +302,7 @@ module RuboCop
           return unless next_sibling
           return if next_sibling.is_a?(Symbol) # Skip non-node siblings
           return if empty_line_between?(node, next_sibling)
-          return if comment_line_after?(node)
+          return if rubocop_directive_after?(node)
 
           keyword = block_keyword(node)
 
@@ -407,20 +407,30 @@ module RuboCop
           line1 = node1.loc.last_line
           line2 = node2.loc.first_line
 
-          # There's an empty line if there's more than 1 line between them
-          (line2 - line1) > 1
+          # Check that at least one line between the nodes is truly blank
+          ((line1 + 1)...line2).any? { |line_num| processed_source.lines[line_num - 1].strip.empty? }
         end
 
         def comment_line_before?(node)
           line_before = node.loc.first_line - 1
           return false if line_before < 1
 
-          processed_source.comments.any? { |c| c.loc.line == line_before }
+          processed_source.comments.any? { |c| c.loc.line == line_before && standalone_comment?(c) }
         end
 
-        def comment_line_after?(node)
+        def rubocop_directive_after?(node)
           line_after = node.loc.last_line + 1
-          processed_source.comments.any? { |c| c.loc.line == line_after }
+          processed_source.comments.any? { |c| c.loc.line == line_after && rubocop_directive?(c) }
+        end
+
+        def rubocop_directive?(comment)
+          comment.text.start_with?("# rubocop:")
+        end
+
+        def standalone_comment?(comment)
+          # A standalone comment is one that occupies its own line (not inline after code)
+          source_line = processed_source.lines[comment.loc.line - 1]
+          source_line.strip.start_with?("#")
         end
       end
     end

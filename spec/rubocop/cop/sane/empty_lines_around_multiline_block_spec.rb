@@ -528,14 +528,41 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
   end
 
   context "with comment after block" do
-    it "does not register offense when comment follows block" do
+    it "registers offense when comment follows block" do
+      expect_offense(<<~RUBY)
+        if condition
+          baz
+        else
+          qux
+        end
+        ^^^ Add empty line after multiline `if` block.
+        # This is a comment
+        foo = bar
+      RUBY
+    end
+  end
+
+  context "with rubocop directive comments" do
+    it "does not register offense when rubocop:disable comment precedes block" do
+      expect_no_offenses(<<~RUBY)
+        foo = bar
+        # rubocop:disable Style/Something
+        if condition
+          baz
+        else
+          qux
+        end
+      RUBY
+    end
+
+    it "does not register offense when rubocop:enable comment follows block" do
       expect_no_offenses(<<~RUBY)
         if condition
           baz
         else
           qux
         end
-        # This is a comment
+        # rubocop:enable Style/Something
         foo = bar
       RUBY
     end
@@ -1552,7 +1579,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
 
-    it "does not require blank line when comment precedes begin" do
+    it "does not register offense when comment precedes begin" do
       expect_no_offenses(<<~RUBY)
         setup_code
         # This is a comment
@@ -1564,13 +1591,14 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
 
-    it "does not require blank line when comment follows begin" do
-      expect_no_offenses(<<~RUBY)
+    it "registers offense when comment follows begin" do
+      expect_offense(<<~RUBY)
         begin
           risky_operation
         rescue => e
           handle_error(e)
         end
+        ^^^ Add empty line after multiline `begin` block.
         # This is a comment
         next_code
       RUBY
@@ -1605,6 +1633,39 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
           ^^^ Add empty line after multiline `begin` block.
           cleanup
         end
+      RUBY
+    end
+  end
+
+  context "with inline comments" do
+    it "registers offense when inline comment follows block end" do
+      expect_offense(<<~RUBY)
+        if condition
+          do_something
+        end
+        ^^^ Add empty line after multiline `if` block.
+        result = compute(x) # some note
+      RUBY
+    end
+
+    it "registers offense when inline comment precedes block" do
+      expect_offense(<<~RUBY)
+        result = compute(x) # some note
+        if condition
+        ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          do_something
+        end
+      RUBY
+    end
+
+    it "registers offense when standalone comment follows block" do
+      expect_offense(<<~RUBY)
+        if condition
+          do_something
+        end
+        ^^^ Add empty line after multiline `if` block.
+        # standalone comment
+        result = compute(x)
       RUBY
     end
   end
