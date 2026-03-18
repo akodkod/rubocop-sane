@@ -95,7 +95,7 @@ module RuboCop
           prev_line_number = comment.loc.line - 1
           return false if prev_line_number < 1
 
-          processed_source.comments.any? { |c| c.loc.line == prev_line_number }
+          processed_source.comments.any? { |c| c.loc.line == prev_line_number && !inline_comment?(c) }
         end
 
         def preceded_by_block_start?(comment)

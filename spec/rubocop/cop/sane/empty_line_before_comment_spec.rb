@@ -377,6 +377,22 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
         third_line
       RUBY
     end
+
+    it "registers offense for standalone comment after line with inline comment" do
+      expect_offense(<<~RUBY)
+        log "Hello" # Debug log
+        # My wonderful comment
+        ^^^^^^^^^^^^^^^^^^^^^^ Add empty line before comment.
+        sleep(7)
+      RUBY
+
+      expect_correction(<<~RUBY)
+        log "Hello" # Debug log
+
+        # My wonderful comment
+        sleep(7)
+      RUBY
+    end
   end
 
   context "with rubocop directives" do
