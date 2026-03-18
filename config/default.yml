@@ -29,9 +29,13 @@ Sane/EmptyLinesAroundMultilineBlock:
 
 Sane/EmptyLinesAroundMultilineCall:
   Description: "Enforces empty lines before and after multiline method calls"
-  Enabled: true
+  Enabled: false
   VersionAdded: "1.0.0"
   SafeAutoCorrect: true
+  SkipMethods:
+    - belongs_to
+    - has_one
+    - has_many
 
 Sane/NoMethodCallAfterEnd:
   Description: "Prohibits calling methods directly after `end`"

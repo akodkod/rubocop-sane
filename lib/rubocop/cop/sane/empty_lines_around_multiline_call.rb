@@ -35,7 +35,7 @@ module RuboCop
 
         def excluded_call?(node)
           has_block?(node) || inner_chain_call?(node) || call_as_argument?(node) ||
-            inside_collection?(node) || setter_call?(node) || inside_control_flow?(node)
+            inside_collection?(node) || setter_call?(node) || inside_control_flow?(node) || skip_method?(node)
         end
 
         def has_block?(node)
@@ -69,6 +69,19 @@ module RuboCop
           parent && CONTROL_FLOW_TYPES.include?(parent.type)
         end
 
+        def skip_method?(node)
+          cop_config.fetch("SkipMethods", []).include?(node.method_name.to_s)
+        end
+
+        def preceded_by_sig?(node)
+          prev_sib = previous_sibling(node)
+          return false unless prev_sib.is_a?(RuboCop::AST::Node)
+
+          (prev_sib.block_type? || prev_sib.numblock_type?) &&
+            prev_sib.send_node&.method_name == :sig &&
+            prev_sib.send_node&.receiver.nil?
+        end
+
         def effective_target(node)
           parent = node.parent
           parent && ASSIGNMENT_TYPES.include?(parent.type) ? parent : node
@@ -76,6 +89,7 @@ module RuboCop
 
         def check_empty_line_before(node)
           return if first_child_of_parent?(node)
+          return if preceded_by_sig?(node)
 
           prev_sib = previous_sibling(node)
           return if prev_sib.nil? || prev_sib.is_a?(Symbol)

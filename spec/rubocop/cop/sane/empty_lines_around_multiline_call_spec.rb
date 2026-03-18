@@ -889,6 +889,97 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
     end
   end
 
+  context "with SkipMethods" do
+    let(:cop_config) { { "Enabled" => true, "SkipMethods" => ["belongs_to", "has_one", "has_many"] } }
+
+    it "does not register offense for belongs_to" do
+      expect_no_offenses(<<~RUBY)
+        class User < ApplicationRecord
+          attr_reader :foo
+          belongs_to :company,
+            optional: true,
+            class_name: "Company"
+          attr_reader :bar
+        end
+      RUBY
+    end
+
+    it "does not register offense for has_many" do
+      expect_no_offenses(<<~RUBY)
+        class User < ApplicationRecord
+          attr_reader :foo
+          has_many :posts,
+            dependent: :destroy,
+            inverse_of: :user
+          attr_reader :bar
+        end
+      RUBY
+    end
+
+    it "does not register offense for has_one" do
+      expect_no_offenses(<<~RUBY)
+        class User < ApplicationRecord
+          attr_reader :foo
+          has_one :profile,
+            dependent: :destroy
+          attr_reader :bar
+        end
+      RUBY
+    end
+
+    it "still registers offense for non-skipped methods" do
+      expect_offense(<<~RUBY)
+        class User < ApplicationRecord
+          attr_reader :foo
+          something(
+          ^^^^^^^^^^ Add empty line before multiline method call.
+            arg1,
+            arg2,
+          )
+          ^ Add empty line after multiline method call.
+          attr_reader :bar
+        end
+      RUBY
+    end
+  end
+
+  context "with sig blocks" do
+    it "does not register offense for memoize def after inline sig block" do
+      expect_no_offenses(<<~RUBY)
+        class Foo
+          sig { returns(String) }
+          memoize def impersonate_params
+            parse_params(ImpersonateParams)
+          end
+        end
+      RUBY
+    end
+
+    it "does not register offense for memoize def after multiline sig block" do
+      expect_no_offenses(<<~RUBY)
+        class Foo
+          sig do
+            params(x: Integer).returns(String)
+          end
+          memoize def foo(x)
+            x.to_s
+          end
+        end
+      RUBY
+    end
+
+    it "does not register offense for regular def after sig block" do
+      expect_no_offenses(<<~RUBY)
+        class Foo
+          sig { returns(String) }
+          def bar
+            "hello"
+          end
+        end
+      RUBY
+    end
+  end
+
   context "with multiline chain using safe navigation" do
     it "registers offense for outermost safe navigation chain" do
       expect_offense(<<~RUBY)
