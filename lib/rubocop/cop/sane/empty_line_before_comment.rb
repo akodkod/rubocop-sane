@@ -105,7 +105,17 @@ module RuboCop
           prev_line = processed_source.lines[prev_line_number - 1]
           return false unless prev_line
 
+          # Strip inline comments from the previous line before checking
+          prev_line = strip_inline_comment(prev_line, prev_line_number)
+
           block_start_pattern?(prev_line)
+        end
+
+        def strip_inline_comment(line, line_number)
+          inline = processed_source.comments.find { |c| c.loc.line == line_number && c.loc.column > 0 }
+          return line unless inline
+
+          line[0...inline.loc.column].rstrip
         end
 
         def block_start_pattern?(line)

@@ -150,6 +150,15 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
       RUBY
     end
 
+    it "does not register offense after if with inline comment" do
+      expect_no_offenses(<<~RUBY)
+        if condition # explanation
+          # Comment inside if
+          do_something
+        end
+      RUBY
+    end
+
     it "does not register offense after unless" do
       expect_no_offenses(<<~RUBY)
         unless condition
@@ -212,6 +221,15 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
         items.each do |item|
           # Comment inside block
           process(item)
+        end
+      RUBY
+    end
+
+    it "does not register offense after do with inline comment" do
+      expect_no_offenses(<<~RUBY)
+        travel_to Time.zone.parse("2026-03-09 12:00") do # Monday
+          # Tuesday is holiday
+          do_something
         end
       RUBY
     end
