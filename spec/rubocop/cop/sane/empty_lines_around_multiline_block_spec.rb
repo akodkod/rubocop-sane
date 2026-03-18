@@ -1779,4 +1779,34 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       RUBY
     end
   end
+
+  context "when if is the only child in ensure clause" do
+    it "does not register offense for if in ensure" do
+      expect_no_offenses(<<~RUBY)
+        begin
+          tempfile = Tempfile.new
+        ensure
+          if Rails.env.development?
+            puts "Hello"
+          end
+        end
+      RUBY
+    end
+  end
+
+  context "when if has siblings in ensure clause" do
+    it "requires blank line before if in ensure with siblings" do
+      expect_offense(<<~RUBY)
+        begin
+          tempfile = Tempfile.new
+        ensure
+          cleanup
+          if Rails.env.development?
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline `if` block.
+            puts "Hello"
+          end
+        end
+      RUBY
+    end
+  end
 end

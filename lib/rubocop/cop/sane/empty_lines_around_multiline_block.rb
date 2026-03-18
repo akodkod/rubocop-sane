@@ -380,6 +380,9 @@ module RuboCop
           return true if parent.type == :when && parent.body == node
           return true if parent.type == :case && parent.else_branch == node
 
+          # For ensure: child[1] is the ensure clause body
+          return true if parent.type == :ensure && parent.children[1] == node
+
           false
         end
 
