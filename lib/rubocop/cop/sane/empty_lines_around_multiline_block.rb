@@ -130,8 +130,14 @@ module RuboCop
         def on_kwbegin(node)
           return unless multiline?(node)
 
-          check_empty_line_before(node)
-          check_empty_line_after(node)
+          assignment_parent = find_assignment_parent(node)
+          if assignment_parent
+            check_empty_line_before_assignment(node, assignment_parent)
+            check_empty_line_after_assignment(node, assignment_parent)
+          else
+            check_empty_line_before(node)
+            check_empty_line_after(node)
+          end
         end
 
         def on_block(node)
@@ -192,6 +198,27 @@ module RuboCop
           return parent if parent.send_type? && parent.method_name.to_s.end_with?("=")
 
           nil
+        end
+
+        def check_empty_line_before_assignment(block_node, assignment_node)
+          return if first_child_of_parent?(assignment_node)
+
+          prev_sib = previous_sibling(assignment_node)
+          return unless prev_sib
+          return if prev_sib.is_a?(Symbol)
+          return if empty_line_between?(prev_sib, assignment_node)
+          return if comment_line_before?(assignment_node)
+
+          keyword = block_keyword(block_node)
+
+          add_offense(block_node, message: format(MSG_BEFORE, keyword: keyword)) do |corrector|
+            corrector.insert_before(
+              assignment_node.source_range.with(
+                begin_pos: assignment_node.source_range.begin_pos - assignment_node.loc.column,
+              ),
+              "\n",
+            )
+          end
         end
 
         def check_empty_line_after_assignment(block_node, assignment_node)

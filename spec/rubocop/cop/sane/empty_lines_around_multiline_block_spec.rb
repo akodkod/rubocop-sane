@@ -1635,6 +1635,116 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         end
       RUBY
     end
+
+    context "when begin is used in assignment" do
+      it "does not register offense for conditional assignment begin as only child in method" do
+        expect_no_offenses(<<~RUBY)
+          def foo
+            @foo ||= begin
+              expensive_computation
+            rescue => e
+              fallback_value
+            end
+          end
+        RUBY
+      end
+
+      it "does not register offense for assignment begin as only child in method" do
+        expect_no_offenses(<<~RUBY)
+          def foo
+            @foo = begin
+              expensive_computation
+            rescue => e
+              fallback_value
+            end
+          end
+        RUBY
+      end
+
+      it "does not register offense for begin as last child in method" do
+        expect_no_offenses(<<~RUBY)
+          def foo
+            setup
+
+            @foo ||= begin
+              expensive_computation
+            rescue => e
+              fallback_value
+            end
+          end
+        RUBY
+      end
+
+      it "registers offense when code follows conditional assignment begin without blank line" do
+        expect_offense(<<~RUBY)
+          def foo
+            @foo ||= begin
+              expensive_computation
+            rescue => e
+              fallback_value
+            end
+            ^^^ Add empty line after multiline `begin` block.
+            cleanup
+          end
+        RUBY
+      end
+
+      it "registers offense when code follows assignment begin without blank line" do
+        expect_offense(<<~RUBY)
+          def foo
+            @foo = begin
+              expensive_computation
+            rescue => e
+              fallback_value
+            end
+            ^^^ Add empty line after multiline `begin` block.
+            cleanup
+          end
+        RUBY
+      end
+
+      it "does not register offense when blank line follows assignment begin" do
+        expect_no_offenses(<<~RUBY)
+          def foo
+            @foo ||= begin
+              expensive_computation
+            rescue => e
+              fallback_value
+            end
+
+            cleanup
+          end
+        RUBY
+      end
+
+      it "requires blank line around begin in method with siblings" do
+        expect_offense(<<~RUBY)
+          def foo
+            setup
+            @foo ||= begin
+                     ^^^^^ Add empty line before multiline `begin` block.
+              risky_operation
+            rescue => e
+              handle_error(e)
+            end
+            ^^^ Add empty line after multiline `begin` block.
+            cleanup
+          end
+        RUBY
+      end
+
+      it "does not register offense for regular assignment with begin" do
+        expect_no_offenses(<<~RUBY)
+          def foo
+            result = begin
+              risky_operation
+            rescue => e
+              default_value
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context "with inline comments" do
