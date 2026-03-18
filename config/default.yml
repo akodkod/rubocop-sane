@@ -3,36 +3,42 @@ Sane:
   DocumentationBaseURL: https://github.com/akodkod/rubocop-sane
 
 Sane/DisallowMethods:
-  Description: "Enforces method replacements and prohibitions."
+  Description: "Enforces method replacements and prohibitions"
   Enabled: true
-  VersionAdded: "0.1.0"
+  VersionAdded: "1.0.0"
   SafeAutoCorrect: false
   ReplaceMethods: {}
   ProhibitedMethods: {}
 
 Sane/ConditionalAssignmentAllowTernary:
-  Description: "Enforces assignment inside conditions, but allows ternary operators."
+  Description: "Enforces assignment inside conditions, but allows ternary operators"
   Enabled: true
-  VersionAdded: "0.1.0"
+  VersionAdded: "1.0.0"
 
 Sane/EmptyLineBeforeComment:
-  Description: "Enforces empty line before comments, except after block starts."
+  Description: "Enforces empty line before comments, except after block starts"
   Enabled: true
-  VersionAdded: "0.1.0"
+  VersionAdded: "1.0.0"
   SafeAutoCorrect: true
 
 Sane/EmptyLinesAroundMultilineBlock:
-  Description: "Enforces empty lines before and after multiline blocks."
+  Description: "Enforces empty lines before and after multiline blocks"
   Enabled: true
-  VersionAdded: "0.1.0"
+  VersionAdded: "1.0.0"
+  SafeAutoCorrect: true
+
+Sane/EmptyLinesAroundMultilineCall:
+  Description: "Enforces empty lines before and after multiline method calls"
+  Enabled: true
+  VersionAdded: "1.0.0"
   SafeAutoCorrect: true
 
 Sane/NoMethodCallAfterEnd:
-  Description: "Prohibits calling methods directly after `end`."
+  Description: "Prohibits calling methods directly after `end`"
   Enabled: true
-  VersionAdded: "0.1.0"
+  VersionAdded: "1.0.0"
 
 Sane/OutdatedComments:
-  Description: "Detects TODO/NOTE/FIXME comments with dates in the past."
+  Description: "Detects TODO/NOTE/FIXME comments with dates in the past"
   Enabled: true
-  VersionAdded: "0.2.0"
+  VersionAdded: "1.0.0"
