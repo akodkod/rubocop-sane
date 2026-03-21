@@ -46,3 +46,9 @@ Sane/OutdatedComments:
   Description: "Detects TODO/NOTE/FIXME comments with dates in the past"
   Enabled: true
   VersionAdded: "1.0.0"
+
+Sane/RedundantSelfAssignment:
+  Description: "Detects redundant assignment within `||=` to the same target"
+  Enabled: true
+  VersionAdded: "1.0.0"
+  SafeAutoCorrect: true
