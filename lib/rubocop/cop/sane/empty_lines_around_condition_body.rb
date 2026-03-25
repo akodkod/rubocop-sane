@@ -95,7 +95,7 @@ module RuboCop
         end
 
         def check_beginning(body, keyword_line)
-          first_line = body.loc.first_line
+          first_line = effective_first_line(keyword_line, body.loc.first_line)
           return unless first_line > keyword_line + 1
           return unless blank_lines_between?(keyword_line, first_line)
 
@@ -106,7 +106,7 @@ module RuboCop
         end
 
         def check_end(body, closing_line, closing_range)
-          last_line = body.loc.last_line
+          last_line = effective_last_line(body.loc.last_line, closing_line)
           return unless closing_line > last_line + 1
           return unless blank_lines_between?(last_line, closing_line)
 
@@ -117,6 +117,29 @@ module RuboCop
 
         def first_body_expression(body)
           body.begin_type? ? body.children.first : body
+        end
+
+        def effective_first_line(keyword_line, body_first_line)
+          comments = comments_between(keyword_line, body_first_line)
+          comment = comments.min_by { |c| c.loc.line }
+          comment ? comment.loc.line : body_first_line
+        end
+
+        def effective_last_line(body_last_line, closing_line)
+          comments = comments_between(body_last_line, closing_line)
+          comment = comments.max_by { |c| c.loc.line }
+          comment ? comment.loc.line : body_last_line
+        end
+
+        def comments_between(start_line, end_line)
+          processed_source.comments.select do |c|
+            c.loc.line > start_line && c.loc.line < end_line && standalone_comment?(c)
+          end
+        end
+
+        def standalone_comment?(comment)
+          source_line = processed_source.lines[comment.loc.line - 1]
+          source_line.strip.start_with?("#")
         end
 
         def blank_lines_between?(start_line, end_line)

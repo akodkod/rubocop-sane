@@ -211,6 +211,44 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundConditionBody, :config do
     end
   end
 
+  context "when comment is at the end of body before else" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        if condition
+          body
+
+          # Comment at the end of body
+        else
+          another_body
+        end
+      RUBY
+    end
+  end
+
+  context "when comment is at the end of body before end" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        if condition
+          body
+
+          # Comment at the end of body
+        end
+      RUBY
+    end
+  end
+
+  context "when comment is at the beginning of body after keyword" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        if condition
+          # Comment at the beginning of body
+
+          body
+        end
+      RUBY
+    end
+  end
+
   context "when body has empty lines in the middle" do
     it "does not register an offense for middle empty lines" do
       expect_no_offenses(<<~RUBY)
