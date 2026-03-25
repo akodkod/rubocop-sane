@@ -21,6 +21,12 @@ Sane/EmptyLineBeforeComment:
   VersionAdded: "1.0.0"
   SafeAutoCorrect: true
 
+Sane/EmptyLinesAroundConditionBody:
+  Description: "Disallows empty lines at the beginning and end of condition bodies"
+  Enabled: true
+  VersionAdded: "1.0.0"
+  SafeAutoCorrect: true
+
 Sane/EmptyLinesAroundMultilineBlock:
   Description: "Enforces empty lines before and after multiline blocks"
   Enabled: true
@@ -36,6 +42,12 @@ Sane/EmptyLinesAroundMultilineCall:
     - belongs_to
     - has_one
     - has_many
+
+Sane/MultilineChainOnSeparateLines:
+  Description: "Enforces that each method in a multiline chain starts on its own line with a leading dot"
+  Enabled: true
+  VersionAdded: "1.0.0"
+  SafeAutoCorrect: false
 
 Sane/NoMethodCallAfterEnd:
   Description: "Prohibits calling methods directly after `end`"
