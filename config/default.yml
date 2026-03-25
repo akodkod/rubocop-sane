@@ -34,7 +34,7 @@ Sane/EmptyLinesAroundMultilineBlock:
   SafeAutoCorrect: true
 
 Sane/EmptyLinesAroundMultilineCall:
-  Description: "Enforces empty lines before and after multiline method calls"
+  Description: "(Experimental) Enforces empty lines before and after multiline method calls"
   Enabled: false
   VersionAdded: "1.0.0"
   SafeAutoCorrect: true
@@ -44,8 +44,8 @@ Sane/EmptyLinesAroundMultilineCall:
     - has_many
 
 Sane/MultilineChainOnSeparateLines:
-  Description: "Enforces that each method in a multiline chain starts on its own line with a leading dot"
-  Enabled: true
+  Description: "(Experimental) Enforces that each method in a multiline chain starts on its own line with a leading dot"
+  Enabled: false
   VersionAdded: "1.0.0"
   SafeAutoCorrect: false
 
