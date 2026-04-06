@@ -2,6 +2,11 @@ Sane:
   Enabled: true
   DocumentationBaseURL: https://github.com/akodkod/rubocop-sane
 
+Sane/DeleteComment:
+  Description: "Detects comments starting with DELETE and flags them as severe issues"
+  Enabled: true
+  VersionAdded: "1.0.0"
+
 Sane/DisallowMethods:
   Description: "Enforces method replacements and prohibitions"
   Enabled: true
