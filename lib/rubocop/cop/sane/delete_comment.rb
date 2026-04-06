@@ -19,7 +19,7 @@ module RuboCop
       #   # DELETED items are archived
       #
       class DeleteComment < Base
-        COMMENT_PATTERN = /^#\s*DELETE\b/i
+        COMMENT_PATTERN = /^#\s*(?:DELETE|delete)\b/
         MSG = "DELETE comment found — review and remove the marked code"
 
         def on_new_investigation

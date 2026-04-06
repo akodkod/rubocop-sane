@@ -45,6 +45,12 @@ RSpec.describe RuboCop::Cop::Sane::DeleteComment, :config do
       RUBY
     end
 
+    it "does not flag mixed case Delete" do
+      expect_no_offenses(<<~RUBY)
+        # Delete this later
+      RUBY
+    end
+
     it "does not flag delete in the middle of a comment" do
       expect_no_offenses(<<~RUBY)
         # This deletes the record
