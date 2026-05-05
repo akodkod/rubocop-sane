@@ -98,6 +98,20 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
     end
   end
 
+  context "when used with a modifier condition" do
+    it "does not register an offense for trailing if" do
+      expect_no_offenses(<<~RUBY)
+        Log.warn("Received a blank webhook", provider: provider, headers: headers) if body.blank?
+      RUBY
+    end
+
+    it "does not register an offense for trailing unless" do
+      expect_no_offenses(<<~RUBY)
+        render_record(record) unless record.nil?
+      RUBY
+    end
+  end
+
   context "when the method is not in the configured list" do
     it "does not register an offense" do
       expect_no_offenses(<<~RUBY)

@@ -28,6 +28,7 @@ module RuboCop
         def on_send(node)
           return unless node.parenthesized?
           return if node.multiline?
+          return if modifier_condition?(node)
 
           matched_method = find_matching_method(node)
           return unless matched_method
@@ -61,6 +62,11 @@ module RuboCop
           else
             node.method_name.to_s == method_config
           end
+        end
+
+        def modifier_condition?(node)
+          parent = node.parent
+          parent&.if_type? && parent&.modifier_form?
         end
 
         def methods
