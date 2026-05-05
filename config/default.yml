@@ -54,6 +54,13 @@ Sane/MultilineChainOnSeparateLines:
   VersionAdded: "1.0.0"
   SafeAutoCorrect: false
 
+Sane/OmitParentheses:
+  Description: "Enforces omitting parentheses for specific methods"
+  Enabled: true
+  VersionAdded: "1.0.0"
+  SafeAutoCorrect: true
+  Methods: []
+
 Sane/NoMethodCallAfterEnd:
   Description: "Prohibits calling methods directly after `end`"
   Enabled: true
