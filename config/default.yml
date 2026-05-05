@@ -69,3 +69,18 @@ Sane/RedundantSelfAssignment:
   Enabled: true
   VersionAdded: "1.0.0"
   SafeAutoCorrect: true
+
+Sane/VariableNameLength:
+  Description: "Enforces minimum variable name length"
+  Enabled: false
+  VersionAdded: "1.0.0"
+  MinLength: 2
+  AllowedNames:
+    - i
+    - j
+    - k
+    - n
+    - e
+    - x
+    - y
+    - _
