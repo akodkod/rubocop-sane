@@ -27,6 +27,7 @@ module RuboCop
 
         def on_send(node)
           return unless node.parenthesized?
+          return if node.multiline?
 
           matched_method = find_matching_method(node)
           return unless matched_method

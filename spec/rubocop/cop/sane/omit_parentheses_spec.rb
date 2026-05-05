@@ -52,33 +52,34 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
       RUBY
     end
 
-    it "registers an offense for a multiline string argument" do
-      expect_offense(<<~RUBY)
-        Log.info("some very long " \\
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Omit parentheses for `Log.info`.
-                 "multiline string")
-      RUBY
+  end
 
-      expect_correction(<<~RUBY)
-        Log.info "some very long " \\
-                 "multiline string"
+  context "when the call is multiline" do
+    it "does not register an offense for a multiline string argument" do
+      expect_no_offenses(<<~RUBY)
+        Log.info("some very long " \\
+                 "multiline string")
       RUBY
     end
 
-    it "registers an offense for a call with a multiline hash argument" do
-      expect_offense(<<~RUBY)
+    it "does not register an offense for a call with a multiline hash argument" do
+      expect_no_offenses(<<~RUBY)
         Log.info("msg", {
-        ^^^^^^^^^^^^^^^^^ Omit parentheses for `Log.info`.
           key: value,
           other: data
         })
       RUBY
+    end
 
-      expect_correction(<<~RUBY)
-        Log.info "msg", {
-          key: value,
-          other: data
-        }
+    it "does not register an offense for arguments on separate lines" do
+      expect_no_offenses(<<~RUBY)
+        Log.error(
+          "error message",
+          nil,
+          code: response.code,
+          message: response.message,
+          body: response.parsed_response,
+        )
       RUBY
     end
   end
