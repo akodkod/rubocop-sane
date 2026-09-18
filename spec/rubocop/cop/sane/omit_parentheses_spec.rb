@@ -51,7 +51,6 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
         Log.info "message"
       RUBY
     end
-
   end
 
   context "when the call is multiline" do

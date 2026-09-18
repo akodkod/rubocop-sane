@@ -66,7 +66,7 @@ module RuboCop
 
         def modifier_condition?(node)
           parent = node.parent
-          parent&.if_type? && parent&.modifier_form?
+          parent&.if_type? && parent.modifier_form?
         end
 
         def methods

@@ -1,76 +1,128 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Sane::ProhibitedComments, :config do
+  context "with custom prohibited words" do
+    let(:cop_config) { { "ProhibitedWords" => ["TODO", "FIX.ME"] } }
+
+    it "registers an offense for a configured word" do
+      expect_offense(<<~RUBY, severity: :warning)
+        # TODO: finish this
+        ^^^^^^^^^^^^^^^^^^^ TODO comment found — review and address the comment
+      RUBY
+    end
+
+    it "treats configured words as literal strings" do
+      expect_offense(<<~RUBY)
+        # FIX.ME
+        ^^^^^^^^ FIX.ME comment found — review and address the comment
+      RUBY
+
+      expect_no_offenses(<<~RUBY)
+        # FIXxME
+      RUBY
+    end
+
+    it "replaces the default words" do
+      expect_no_offenses(<<~RUBY)
+        # DELETE this
+        # delete this
+        # REMEMBER this
+        # remember this
+      RUBY
+    end
+
+    it "only matches case-sensitive words at the start of comments" do
+      expect_no_offenses(<<~RUBY)
+        # todo
+        # TODOs
+        # This is a TODO
+      RUBY
+    end
+  end
+
+  context "with no prohibited words" do
+    let(:cop_config) { { "ProhibitedWords" => [] } }
+
+    it "does not register offenses" do
+      expect_no_offenses(<<~RUBY)
+        # DELETE
+        # REMEMBER
+        # TODO
+        # ordinary comment
+      RUBY
+    end
+  end
+
   context "when comment starts with DELETE" do
     it "registers an offense for standalone DELETE" do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, severity: :warning)
         # DELETE
-        ^^^^^^^^ DELETE comment found — review and remove the marked code
+        ^^^^^^^^ DELETE comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for DELETE with description" do
       expect_offense(<<~RUBY)
         # DELETE this code after migration
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ DELETE comment found — review and remove the marked code
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ DELETE comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for DELETE with colon" do
       expect_offense(<<~RUBY)
         # DELETE: remove after v2
-        ^^^^^^^^^^^^^^^^^^^^^^^^^ DELETE comment found — review and remove the marked code
+        ^^^^^^^^^^^^^^^^^^^^^^^^^ DELETE comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for lowercase delete" do
       expect_offense(<<~RUBY)
         # delete this
-        ^^^^^^^^^^^^^ DELETE comment found — review and remove the marked code
+        ^^^^^^^^^^^^^ delete comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for DELETE without space after hash" do
       expect_offense(<<~RUBY)
         #DELETE
-        ^^^^^^^ DELETE comment found — review and remove the marked code
+        ^^^^^^^ DELETE comment found — review and address the comment
       RUBY
     end
   end
 
   context "when comment starts with REMEMBER" do
     it "registers an offense for standalone REMEMBER" do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, severity: :warning)
         # REMEMBER
-        ^^^^^^^^^^ REMEMBER comment found — review and address the reminder
+        ^^^^^^^^^^ REMEMBER comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for REMEMBER with description" do
       expect_offense(<<~RUBY)
         # REMEMBER to update the docs
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ REMEMBER comment found — review and address the reminder
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ REMEMBER comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for REMEMBER with colon" do
       expect_offense(<<~RUBY)
         # REMEMBER: notify the team
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ REMEMBER comment found — review and address the reminder
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ REMEMBER comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for lowercase remember" do
       expect_offense(<<~RUBY)
         # remember to do this
-        ^^^^^^^^^^^^^^^^^^^^^ REMEMBER comment found — review and address the reminder
+        ^^^^^^^^^^^^^^^^^^^^^ remember comment found — review and address the comment
       RUBY
     end
 
     it "registers an offense for REMEMBER without space after hash" do
       expect_offense(<<~RUBY)
         #REMEMBER
-        ^^^^^^^^^ REMEMBER comment found — review and address the reminder
+        ^^^^^^^^^ REMEMBER comment found — review and address the comment
       RUBY
     end
   end

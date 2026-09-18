@@ -3,9 +3,14 @@ Sane:
   DocumentationBaseURL: https://github.com/akodkod/rubocop-sane
 
 Sane/ProhibitedComments:
-  Description: "Detects comments starting with prohibited keywords (DELETE, REMEMBER)"
+  Description: "Detects comments starting with configurable prohibited words"
   Enabled: true
   VersionAdded: "1.0.0"
+  ProhibitedWords:
+    - DELETE
+    - delete
+    - REMEMBER
+    - remember
 
 Sane/DisallowMethods:
   Description: "Enforces method replacements and prohibitions"

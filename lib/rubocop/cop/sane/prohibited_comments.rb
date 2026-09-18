@@ -4,12 +4,8 @@ module RuboCop
   module Cop
     module Sane
       # Detects comments that start with prohibited keywords.
-      #
-      # DELETE comments mark code that should be removed. They are flagged
-      # as errors — actionable reminders during code review and CI.
-      #
-      # REMEMBER comments mark things that need attention. They are flagged
-      # as warnings — lower priority than DELETE but still worth addressing.
+      # Configure ProhibitedWords to replace the case-sensitive default list.
+      # Configured words are flagged as warnings. An empty list disables matching.
       #
       # @example
       #   # bad
@@ -25,21 +21,17 @@ module RuboCop
       #   # Remember what user said
       #
       class ProhibitedComments < Base
-        DELETE_PATTERN = /^#\s*(?:DELETE|delete)\b/
-        REMEMBER_PATTERN = /^#\s*(?:REMEMBER|remember)\b/
-
-        MSG_DELETE = "DELETE comment found — review and remove the marked code"
-        MSG_REMEMBER = "REMEMBER comment found — review and address the reminder"
+        MSG = "%<word>s comment found — review and address the comment"
 
         def on_new_investigation
           return unless processed_source.valid_syntax?
 
+          pattern = /^#\s*(#{Regexp.union(cop_config['ProhibitedWords'])})\b/
           processed_source.comments.each do |comment|
-            if comment.text.match?(DELETE_PATTERN)
-              add_offense(comment.source_range, message: MSG_DELETE, severity: :error)
-            elsif comment.text.match?(REMEMBER_PATTERN)
-              add_offense(comment.source_range, message: MSG_REMEMBER, severity: :warning)
-            end
+            match = comment.text.match(pattern)
+            next unless match
+
+            add_offense(comment.source_range, message: format(MSG, word: match[1]), severity: :warning)
           end
         end
       end
