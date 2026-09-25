@@ -41,3 +41,70 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Rubocop::Sane project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/rubocop-sane/blob/main/CODE_OF_CONDUCT.md).
+
+## Model section comments
+
+`Sane/ModelSections` requires populated, unique section headings in this order:
+Includes, Associations, Validations, Enumerables, Scopes. Only sections with
+matching declarations are required. Other sections, such as Constants or
+Callbacks, may appear between them. Both headings and declarations must follow
+the order. The cop reports violations without autocorrecting, even with `-A`.
+
+```ruby
+class Member < ApplicationRecord
+  # Includes
+  include Versioning
+  extend ArrayEnum
+
+  # Associations
+  belongs_to :call_center
+
+  # Enumerables
+  array_enum colors: { red: 1 }
+
+  # Scopes
+  def self.with_ticket_id(id)
+    where(ticket_id: id)
+  end
+end
+```
+
+The cop is enabled by default when using the plugin:
+
+```yaml
+plugins:
+  - rubocop-sane
+
+Sane/ModelSections:
+  ScopeMethodPatterns:
+    - '^with_'
+    - '^without_'
+```
+
+`ScopeMethodPatterns` is a replacement list of Ruby regular-expression strings.
+Use `[]` to disable inference from class method names. `scope` and `default_scope`
+always require Scopes; other class methods explicitly placed under Scopes also
+populate that section. Both `def self.method` and `class << self` are supported.
+
+Includes recognizes `include`, `extend`, and `prepend`. Associations recognizes
+`belongs_to`, `has_one`, `has_many`, and `has_and_belongs_to_many`. Validations
+recognizes `validate`, `validates`, `validates!`, and `validates_*` macros.
+Enumerables recognizes `enum` and `array_enum`. Active Storage attachment macros
+are not classified as Associations.
+
+Headings must be standalone, case-sensitive comments, for example
+`# Associations`. Blank lines and descriptive comments may precede declarations.
+Standalone title-style comments end the preceding section: each word starts
+with an uppercase letter and contains letters only, with `/` and `&` permitted
+as separate words (for example, `# Getters / Setters`). Prose such as
+`# These associations belong to the member.` is not a heading. Repeating a
+heading to resume an earlier section is an offense; unused headings are also
+reported.
+
+The default file filters inspect `**/app/models/**/*.rb` and exclude
+`**/app/models/concerns/**/*.rb`, regardless of the class's superclass. Standard
+RuboCop `Include` and `Exclude` settings can customize these filters. Each class
+is checked independently. Inspection covers direct declarations, macro calls
+with blocks, and modifier conditions. Method bodies, macro block bodies,
+general conditional blocks, and wrappers such as `with_options` are not
+searched for declarations belonging to the enclosing class.

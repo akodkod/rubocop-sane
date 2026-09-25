@@ -96,3 +96,15 @@ Sane/VariableNameLength:
     - x
     - y
     - _
+
+Sane/ModelSections:
+  Description: "Enforces unique, populated, ordered section comments in model classes"
+  Enabled: true
+  Include:
+    - '**/app/models/**/*.rb'
+  Exclude:
+    # A regexp keeps this exclusion independent of the plugin's install path.
+    - !ruby/regexp /(?:\A|\/)app\/models\/concerns\/.*\.rb\z/
+  ScopeMethodPatterns:
+    - '^with_'
+    - '^without_'
