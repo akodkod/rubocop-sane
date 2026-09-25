@@ -49,6 +49,10 @@ module RuboCop
         alias on_gvasgn on_lvasgn
         alias on_casgn on_lvasgn
 
+        def on_send(node)
+          check_assignment(node) if node.setter_method?
+        end
+
         def on_masgn(node)
           check_assignment(node)
         end
@@ -97,6 +101,8 @@ module RuboCop
             node.children[1]
           when :casgn, :op_asgn
             node.children[2]
+          when :send
+            node.last_argument
           end
         end
       end

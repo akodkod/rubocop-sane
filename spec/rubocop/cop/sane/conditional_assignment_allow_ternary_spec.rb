@@ -1,6 +1,126 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
+  context "with setter assignments", :ruby32 do
+    it "registers an offense for if/else with self as the receiver" do
+      expect_offense(<<~RUBY)
+        self.admin = if admin
+        ^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+                       update!(admin, password:)
+                     else
+                       create!(Admin, name:, email:, password:)
+                     end
+      RUBY
+    end
+
+    it "registers an offense for if/else with another receiver" do
+      expect_offense(<<~RUBY)
+        record.name = if condition
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+                        "Alice"
+                      else
+                        "Bob"
+                      end
+      RUBY
+    end
+
+    it "registers an offense for case with self as the receiver" do
+      expect_offense(<<~RUBY)
+        self.admin = case role
+        ^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+                     when :admin then true
+                     else false
+                     end
+      RUBY
+    end
+
+    it "registers an offense for case with another receiver" do
+      expect_offense(<<~RUBY)
+        record.name = case role
+        ^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+                      when :admin then "Alice"
+                      else "Bob"
+                      end
+      RUBY
+    end
+
+    it "does not register an offense for ternaries" do
+      expect_no_offenses(<<~RUBY)
+        self.admin = condition ? true : false
+        record.name = condition ? "Alice" : "Bob"
+      RUBY
+    end
+
+    it "does not register an offense for multiline ternaries" do
+      expect_no_offenses(<<~RUBY)
+        self.admin = condition \\
+          ? true
+          : false
+        record.name = condition \\
+          ? "Alice"
+          : "Bob"
+      RUBY
+    end
+
+    it "does not register an offense for assignments inside the branches" do
+      expect_no_offenses(<<~RUBY)
+        if admin
+          self.admin = update!(admin, password:)
+        else
+          self.admin = create!(Admin, name:, email:, password:)
+        end
+      RUBY
+    end
+
+    it "does not register an offense for if without else" do
+      expect_no_offenses(<<~RUBY)
+        record.name = if condition
+                        "Alice"
+                      end
+      RUBY
+    end
+  end
+
+  context "with ordinary method calls" do
+    it "does not register an offense for if/else arguments" do
+      expect_no_offenses(<<~RUBY)
+        update(if condition
+                 "Alice"
+               else
+                 "Bob"
+               end)
+        record.update(if condition
+                        "Alice"
+                      else
+                        "Bob"
+                      end)
+      RUBY
+    end
+
+    it "does not register an offense for case arguments" do
+      expect_no_offenses(<<~RUBY)
+        update(case role
+               when :admin then "Alice"
+               else "Bob"
+               end)
+        record.update(case role
+                      when :admin then "Alice"
+                      else "Bob"
+                      end)
+      RUBY
+    end
+
+    it "does not register an offense for comparison methods" do
+      expect_no_offenses(<<~RUBY)
+        record.name == if condition
+                         "Alice"
+                       else
+                         "Bob"
+                       end
+      RUBY
+    end
+  end
+
   context "when assigning from if/else" do
     it "registers an offense for local variable assignment" do
       expect_offense(<<~RUBY)
