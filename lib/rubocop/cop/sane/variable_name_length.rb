@@ -26,7 +26,7 @@ module RuboCop
       #   items.each_with_index { |item, i| }
       #
       class VariableNameLength < Base
-        MSG = "Variable name '%<name>s' is too short (minimum is %<min>s characters)."
+        MSG = "Variable name '%<name>s' is too short (minimum is %<min>s characters)"
 
         def on_lvasgn(node)
           name = node.name

@@ -24,6 +24,49 @@ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 
 TODO: Write usage instructions here
 
+### Sane/TrailingCommentPeriod
+
+Enabled by default and supports autocorrection. Removes the final `.` from a
+comment unless an earlier `.` appears in that comment. Consecutive standalone
+`#` lines form one block; a blank line or code starts a new block. Inline comments
+and `=begin`/`=end` comments are checked independently. Any earlier dot counts,
+including dots in abbreviations, URLs, and ellipses.
+
+```ruby
+# bad
+# Explain this operation.
+
+# bad
+# Explain this operation
+# across two lines.
+
+# good
+# Explain this operation
+
+# good
+# First sentence.
+# Second sentence.
+
+# good
+# See example.com.
+```
+
+### Sane/ProhibitedCommentCharacters
+
+Reports each prohibited character in standalone, inline, and `=begin`/`=end`
+comment text. Enabled by default with `;` prohibited. Characters are literal,
+including Unicode characters. Comment delimiters are excluded. This cop reports
+offenses without autocorrection so you can choose appropriate wording or punctuation.
+
+Override the list in `.rubocop.yml` (use `[]` to allow all characters):
+
+```yaml
+Sane/ProhibitedCommentCharacters:
+  ProhibitedCharacters:
+    - ";"
+    - "!"
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

@@ -26,7 +26,7 @@ module RuboCop
       class MultilineChainOnSeparateLines < Base
         extend AutoCorrector
 
-        MSG = "Place each method call in a multiline chain on a separate line with a leading dot."
+        MSG = "Place each method call in a multiline chain on a separate line with a leading dot"
 
         def on_send(node)
           check_chain(node)

@@ -37,7 +37,7 @@ module RuboCop
       class EmptyLineBeforeComment < Base
         extend AutoCorrector
 
-        MSG = "Add empty line before comment."
+        MSG = "Add empty line before comment"
 
         def on_new_investigation
           processed_source.comments.each do |comment|

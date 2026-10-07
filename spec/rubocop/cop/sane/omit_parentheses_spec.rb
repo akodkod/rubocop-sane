@@ -11,7 +11,7 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
     it "registers an offense for a simple method with one argument" do
       expect_offense(<<~RUBY)
         render_record(record)
-        ^^^^^^^^^^^^^^^^^^^^^ Omit parentheses for `render_record`.
+        ^^^^^^^^^^^^^^^^^^^^^ Omit parentheses for `render_record`
       RUBY
 
       expect_correction(<<~RUBY)
@@ -22,7 +22,7 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
     it "registers an offense for a method with no arguments" do
       expect_offense(<<~RUBY)
         render_record()
-        ^^^^^^^^^^^^^^^ Omit parentheses for `render_record`.
+        ^^^^^^^^^^^^^^^ Omit parentheses for `render_record`
       RUBY
 
       expect_correction(<<~RUBY)
@@ -33,7 +33,7 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
     it "registers an offense for a method with multiple arguments" do
       expect_offense(<<~RUBY)
         render_record(a, b)
-        ^^^^^^^^^^^^^^^^^^^ Omit parentheses for `render_record`.
+        ^^^^^^^^^^^^^^^^^^^ Omit parentheses for `render_record`
       RUBY
 
       expect_correction(<<~RUBY)
@@ -44,7 +44,7 @@ RSpec.describe RuboCop::Cop::Sane::OmitParentheses, :config do
     it "registers an offense for a receiver-qualified method" do
       expect_offense(<<~RUBY)
         Log.info("message")
-        ^^^^^^^^^^^^^^^^^^^ Omit parentheses for `Log.info`.
+        ^^^^^^^^^^^^^^^^^^^ Omit parentheses for `Log.info`
       RUBY
 
       expect_correction(<<~RUBY)

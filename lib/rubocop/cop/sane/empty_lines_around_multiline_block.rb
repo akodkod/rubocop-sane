@@ -82,8 +82,8 @@ module RuboCop
       class EmptyLinesAroundMultilineBlock < Base
         extend AutoCorrector
 
-        MSG_BEFORE = "Add empty line before multiline `%<keyword>s` block."
-        MSG_AFTER = "Add empty line after multiline `%<keyword>s` block."
+        MSG_BEFORE = "Add empty line before multiline `%<keyword>s` block"
+        MSG_AFTER = "Add empty line after multiline `%<keyword>s` block"
 
         def on_if(node)
           return if node.ternary?

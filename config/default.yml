@@ -12,6 +12,12 @@ Sane/ProhibitedComments:
     - REMEMBER
     - remember
 
+Sane/ProhibitedCommentCharacters:
+  Description: "Detects configurable prohibited characters in comment text"
+  Enabled: true
+  ProhibitedCharacters:
+    - ";"
+
 Sane/DisallowMethods:
   Description: "Enforces method replacements and prohibitions"
   Enabled: true
@@ -96,3 +102,8 @@ Sane/VariableNameLength:
     - x
     - y
     - _
+
+Sane/TrailingCommentPeriod:
+  Description: "Removes a final comment period unless the comment contains an earlier period"
+  Enabled: true
+  SafeAutoCorrect: true

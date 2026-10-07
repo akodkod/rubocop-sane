@@ -5,7 +5,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for if/else with self as the receiver" do
       expect_offense(<<~RUBY)
         self.admin = if admin
-        ^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                        update!(admin, password:)
                      else
                        create!(Admin, name:, email:, password:)
@@ -16,7 +16,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for if/else with another receiver" do
       expect_offense(<<~RUBY)
         record.name = if condition
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                         "Alice"
                       else
                         "Bob"
@@ -27,7 +27,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for case with self as the receiver" do
       expect_offense(<<~RUBY)
         self.admin = case role
-        ^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
                      when :admin then true
                      else false
                      end
@@ -37,7 +37,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for case with another receiver" do
       expect_offense(<<~RUBY)
         record.name = case role
-        ^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
                       when :admin then "Alice"
                       else "Bob"
                       end
@@ -125,7 +125,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for local variable assignment" do
       expect_offense(<<~RUBY)
         foo = if condition
-        ^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                 1
               else
                 2
@@ -136,7 +136,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for instance variable assignment" do
       expect_offense(<<~RUBY)
         @foo = if condition
-        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                  1
                else
                  2
@@ -147,7 +147,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for class variable assignment" do
       expect_offense(<<~RUBY)
         @@foo = if condition
-        ^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                   1
                 else
                   2
@@ -158,7 +158,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for global variable assignment" do
       expect_offense(<<~RUBY)
         $foo = if condition
-        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                  1
                else
                  2
@@ -169,7 +169,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for constant assignment" do
       expect_offense(<<~RUBY)
         FOO = if condition
-        ^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                 1
               else
                 2
@@ -182,7 +182,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         foo = case bar
-        ^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
               when :a then 1
               when :b then 2
               end
@@ -194,7 +194,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         foo = unless condition
-        ^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `unless` branch.
+        ^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `unless` branch
                 1
               else
                 2
@@ -245,7 +245,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for multiple assignment" do
       expect_offense(<<~RUBY)
         a, b = if condition
-        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                  [1, 2]
                else
                  [3, 4]
@@ -258,7 +258,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for += assignment" do
       expect_offense(<<~RUBY)
         foo += if condition
-        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                  1
                else
                  2
@@ -269,7 +269,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for ||= assignment" do
       expect_offense(<<~RUBY)
         foo ||= if condition
-        ^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                   1
                 else
                   2
@@ -280,7 +280,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for &&= assignment" do
       expect_offense(<<~RUBY)
         foo &&= if condition
-        ^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                   1
                 else
                   2
@@ -293,7 +293,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         Foo::BAR = if condition
-        ^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch.
+        ^^^^^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `if` branch
                      1
                    else
                      2
@@ -320,7 +320,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for += case" do
       expect_offense(<<~RUBY)
         foo += case bar
-        ^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
                when :a then 1
                when :b then 2
                end
@@ -330,7 +330,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for ||= case" do
       expect_offense(<<~RUBY)
         foo ||= case bar
-        ^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
                 when :a then 1
                 when :b then 2
                 end
@@ -340,7 +340,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense for &&= case" do
       expect_offense(<<~RUBY)
         foo &&= case bar
-        ^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
                 when :a then 1
                 when :b then 2
                 end
@@ -352,7 +352,7 @@ RSpec.describe RuboCop::Cop::Sane::ConditionalAssignmentAllowTernary, :config do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         Foo::BAR = case baz
-        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch.
+        ^^^^^^^^^^^^^^^^^^^ Move the assignment inside the `case` branch
                    when :a then 1
                    when :b then 2
                    end

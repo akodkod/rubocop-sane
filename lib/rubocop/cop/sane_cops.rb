@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "sane/prohibited_comments"
+require_relative "sane/prohibited_comment_characters"
 require_relative "sane/disallow_methods"
 require_relative "sane/conditional_assignment_allow_ternary"
 require_relative "sane/empty_line_before_comment"
@@ -13,3 +14,4 @@ require_relative "sane/outdated_comments"
 require_relative "sane/redundant_self_assignment"
 require_relative "sane/omit_parentheses"
 require_relative "sane/variable_name_length"
+require_relative "sane/trailing_comment_period"

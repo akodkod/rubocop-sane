@@ -12,14 +12,14 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for a single-character variable name" do
       expect_offense(<<~RUBY)
         a = 1
-        ^^^^^ Variable name 'a' is too short (minimum is 3 characters).
+        ^^^^^ Variable name 'a' is too short (minimum is 3 characters)
       RUBY
     end
 
     it "registers an offense for a two-character variable name" do
       expect_offense(<<~RUBY)
         ab = 2
-        ^^^^^^ Variable name 'ab' is too short (minimum is 3 characters).
+        ^^^^^^ Variable name 'ab' is too short (minimum is 3 characters)
       RUBY
     end
 
@@ -35,8 +35,8 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for short parameter names" do
       expect_offense(<<~RUBY)
         def foo(a, bb)
-                   ^^ Variable name 'bb' is too short (minimum is 3 characters).
-                ^ Variable name 'a' is too short (minimum is 3 characters).
+                   ^^ Variable name 'bb' is too short (minimum is 3 characters)
+                ^ Variable name 'a' is too short (minimum is 3 characters)
         end
       RUBY
     end
@@ -51,7 +51,7 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for short optional parameter names" do
       expect_offense(<<~RUBY)
         def foo(ab = 1)
-                ^^^^^^ Variable name 'ab' is too short (minimum is 3 characters).
+                ^^^^^^ Variable name 'ab' is too short (minimum is 3 characters)
         end
       RUBY
     end
@@ -59,7 +59,7 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for short keyword parameter names" do
       expect_offense(<<~RUBY)
         def foo(ab:)
-                ^^^ Variable name 'ab' is too short (minimum is 3 characters).
+                ^^^ Variable name 'ab' is too short (minimum is 3 characters)
         end
       RUBY
     end
@@ -67,7 +67,7 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for short optional keyword parameter names" do
       expect_offense(<<~RUBY)
         def foo(ab: 1)
-                ^^^^^ Variable name 'ab' is too short (minimum is 3 characters).
+                ^^^^^ Variable name 'ab' is too short (minimum is 3 characters)
         end
       RUBY
     end
@@ -77,7 +77,7 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for short block parameter names" do
       expect_offense(<<~RUBY)
         items.each { |a| puts a }
-                      ^ Variable name 'a' is too short (minimum is 3 characters).
+                      ^ Variable name 'a' is too short (minimum is 3 characters)
       RUBY
     end
 
@@ -131,7 +131,7 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for names shorter than custom minimum" do
       expect_offense(<<~RUBY)
         age = 30
-        ^^^^^^^^ Variable name 'age' is too short (minimum is 4 characters).
+        ^^^^^^^^ Variable name 'age' is too short (minimum is 4 characters)
       RUBY
     end
 
@@ -159,7 +159,7 @@ RSpec.describe RuboCop::Cop::Sane::VariableNameLength, :config do
     it "registers an offense for names not in custom allowed list" do
       expect_offense(<<~RUBY)
         i = 0
-        ^^^^^ Variable name 'i' is too short (minimum is 3 characters).
+        ^^^^^ Variable name 'i' is too short (minimum is 3 characters)
       RUBY
     end
   end

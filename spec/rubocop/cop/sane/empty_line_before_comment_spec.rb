@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
       expect_offense(<<~RUBY)
         foo = 1
         # This is a comment
-        ^^^^^^^^^^^^^^^^^^^ Add empty line before comment.
+        ^^^^^^^^^^^^^^^^^^^ Add empty line before comment
         bar = 2
       RUBY
 
@@ -22,7 +22,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
       expect_offense(<<~RUBY)
         do_something
         # Explain next step
-        ^^^^^^^^^^^^^^^^^^^ Add empty line before comment.
+        ^^^^^^^^^^^^^^^^^^^ Add empty line before comment
         do_another_thing
       RUBY
 
@@ -71,7 +71,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
       expect_offense(<<~RUBY)
         foo = 1
         # First comment
-        ^^^^^^^^^^^^^^^ Add empty line before comment.
+        ^^^^^^^^^^^^^^^ Add empty line before comment
         # Second comment
         bar = 2
       RUBY
@@ -400,7 +400,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
       expect_offense(<<~RUBY)
         log "Hello" # Debug log
         # My wonderful comment
-        ^^^^^^^^^^^^^^^^^^^^^^ Add empty line before comment.
+        ^^^^^^^^^^^^^^^^^^^^^^ Add empty line before comment
         sleep(7)
       RUBY
 
@@ -446,13 +446,13 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
       expect_offense(<<~RUBY)
         foo = 1
         # First section
-        ^^^^^^^^^^^^^^^ Add empty line before comment.
+        ^^^^^^^^^^^^^^^ Add empty line before comment
         bar = 2
 
         # Second section
         baz = 3
         # Third section
-        ^^^^^^^^^^^^^^^ Add empty line before comment.
+        ^^^^^^^^^^^^^^^ Add empty line before comment
         qux = 4
       RUBY
     end
@@ -478,7 +478,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLineBeforeComment, :config do
           def bar
             do_something
             # This needs a blank line
-            ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before comment.
+            ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before comment
             do_another
           end
         end

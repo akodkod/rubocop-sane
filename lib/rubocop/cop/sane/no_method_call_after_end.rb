@@ -38,7 +38,7 @@ module RuboCop
       #   result.compact
       #
       class NoMethodCallAfterEnd < Base
-        MSG = "Do not call methods directly after `end`."
+        MSG = "Do not call methods directly after `end`"
 
         END_KEYWORD_NODES = [
           :if, :case, :case_match, :while, :until, :for,

@@ -23,7 +23,7 @@ module RuboCop
       class OmitParentheses < Base
         extend AutoCorrector
 
-        MSG = "Omit parentheses for `%<method>s`."
+        MSG = "Omit parentheses for `%<method>s`"
 
         def on_send(node)
           return unless node.parenthesized?

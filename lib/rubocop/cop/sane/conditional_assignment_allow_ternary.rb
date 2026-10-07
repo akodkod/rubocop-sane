@@ -36,7 +36,7 @@ module RuboCop
       #     : 2
       #
       class ConditionalAssignmentAllowTernary < Base
-        MSG = "Move the assignment inside the `%<keyword>s` branch."
+        MSG = "Move the assignment inside the `%<keyword>s` branch"
 
         ASSIGNMENT_TYPES = [:lvasgn, :ivasgn, :cvasgn, :gvasgn, :casgn].freeze
 

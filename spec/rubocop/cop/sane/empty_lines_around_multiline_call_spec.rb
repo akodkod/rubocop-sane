@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         something(
-        ^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
@@ -28,7 +28,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
 
@@ -46,11 +46,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         something(
-        ^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end
@@ -61,7 +61,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         result
-        ^^^^^^ Add empty line before multiline method call.
+        ^^^^^^ Add empty line before multiline method call
           .method1
           .method2
       RUBY
@@ -80,7 +80,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         result
           .method1
           .method2
-           ^^^^^^^ Add empty line after multiline method call.
+           ^^^^^^^ Add empty line after multiline method call
         baz = qux
       RUBY
 
@@ -294,11 +294,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         result = something(
-        ^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end
@@ -307,11 +307,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         @result = something(
-        ^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end
@@ -320,11 +320,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         result ||= something(
-        ^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end
@@ -391,9 +391,9 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         another(
-        ^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^ Add empty line before multiline method call
           arg3,
           arg4,
         )
@@ -467,10 +467,10 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         result&.method1(
-        ^^^^^^^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^^^^^^^ Add empty line before multiline method call
           arg1,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end
@@ -481,11 +481,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         obj.method1(
-        ^^^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end
@@ -496,7 +496,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         something(
-        ^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^ Add empty line before multiline method call
           arg1,
           arg2,
         )
@@ -518,7 +518,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
           arg1,
           arg2,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
 
@@ -685,11 +685,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         def foo
           setup
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           cleanup
         end
       RUBY
@@ -740,11 +740,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         when :a
           setup
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           teardown
         end
       RUBY
@@ -760,11 +760,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         else
           setup
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           teardown
         end
       RUBY
@@ -779,11 +779,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         rescue
           log_error
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           cleanup
         end
       RUBY
@@ -796,11 +796,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         if condition
           setup
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           teardown
         end
       RUBY
@@ -815,11 +815,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         else
           setup
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           teardown
         end
       RUBY
@@ -832,11 +832,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         class MyClass
           attr_reader :foo
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           attr_reader :bar
         end
       RUBY
@@ -849,11 +849,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         class << self
           attr_reader :foo
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           attr_reader :bar
         end
       RUBY
@@ -866,11 +866,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         module MyModule
           attr_reader :foo
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           attr_reader :bar
         end
       RUBY
@@ -932,11 +932,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
         class User < ApplicationRecord
           attr_reader :foo
           something(
-          ^^^^^^^^^^ Add empty line before multiline method call.
+          ^^^^^^^^^^ Add empty line before multiline method call
             arg1,
             arg2,
           )
-          ^ Add empty line after multiline method call.
+          ^ Add empty line after multiline method call
           attr_reader :bar
         end
       RUBY
@@ -985,10 +985,10 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineCall, :config do
       expect_offense(<<~RUBY)
         foo = bar
         result&.method1&.method2(
-        ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline method call
           arg1,
         )
-        ^ Add empty line after multiline method call.
+        ^ Add empty line after multiline method call
         baz = qux
       RUBY
     end

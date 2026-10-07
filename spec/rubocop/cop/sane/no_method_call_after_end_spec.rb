@@ -7,7 +7,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         if condition
           value
         end.foo
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
 
@@ -16,7 +16,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         if condition
           value
         end&.foo
-           ^^ Do not call methods directly after `end`.
+           ^^ Do not call methods directly after `end`
       RUBY
     end
 
@@ -36,7 +36,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         when 1
           :one
         end.to_s
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -47,7 +47,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         array.map do |item|
           transform(item)
         end.compact
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
 
@@ -56,7 +56,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         array.map do |item|
           transform(item)
         end.compact.first
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -69,7 +69,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         rescue
           fallback
         end.process
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -80,7 +80,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         while condition
           accumulate
         end.result
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -91,7 +91,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         until done
           work
         end.result
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -102,7 +102,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         def foo
           :bar
         end.call
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -112,7 +112,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
       expect_offense(<<~RUBY)
         class Foo
         end.name
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -122,7 +122,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
       expect_offense(<<~RUBY)
         module Foo
         end.name
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end
@@ -133,7 +133,7 @@ RSpec.describe RuboCop::Cop::Sane::NoMethodCallAfterEnd, :config do
         for i in 1..10
           puts i
         end.inspect
-           ^ Do not call methods directly after `end`.
+           ^ Do not call methods directly after `end`
       RUBY
     end
   end

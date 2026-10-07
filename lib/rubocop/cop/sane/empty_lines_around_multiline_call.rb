@@ -9,8 +9,8 @@ module RuboCop
       class EmptyLinesAroundMultilineCall < Base # rubocop:disable Metrics/ClassLength
         extend AutoCorrector
 
-        MSG_BEFORE = "Add empty line before multiline method call."
-        MSG_AFTER = "Add empty line after multiline method call."
+        MSG_BEFORE = "Add empty line before multiline method call"
+        MSG_AFTER = "Add empty line after multiline method call"
 
         ASSIGNMENT_TYPES = [:lvasgn, :ivasgn, :cvasgn, :gvasgn, :casgn, :masgn, :op_asgn, :or_asgn, :and_asgn].freeze
         BODY_PARENT_TYPES = [:block, :numblock, :def, :defs, :resbody, :class, :module, :sclass].freeze

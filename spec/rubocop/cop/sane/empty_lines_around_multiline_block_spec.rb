@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         work_for = data.work_done_for
         if data.present?
-        ^^^^^^^^^^^^^^^^ Add empty line before multiline `if` block.
+        ^^^^^^^^^^^^^^^^ Add empty line before multiline `if` block
           creation_date = date1
         else
           creation_date = date2
@@ -31,7 +31,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         else
           creation_date = date2
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         legal_start_date = date3
       RUBY
 
@@ -50,12 +50,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         if condition
-        ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+        ^^^^^^^^^^^^ Add empty line before multiline `if` block
           baz
         else
           qux
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         quux = corge
       RUBY
     end
@@ -146,13 +146,13 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         case value
-        ^^^^^^^^^^ Add empty line before multiline `case` block.
+        ^^^^^^^^^^ Add empty line before multiline `case` block
         when :a
           handle_a
         when :b
           handle_b
         end
-        ^^^ Add empty line after multiline `case` block.
+        ^^^ Add empty line after multiline `case` block
         baz = qux
       RUBY
     end
@@ -176,13 +176,13 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         case value
-        ^^^^^^^^^^ Add empty line before multiline `case` block.
+        ^^^^^^^^^^ Add empty line before multiline `case` block
         in Integer
           handle_int
         in String
           handle_string
         end
-        ^^^ Add empty line after multiline `case` block.
+        ^^^ Add empty line after multiline `case` block
         baz = qux
       RUBY
     end
@@ -193,10 +193,10 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         items.each do |item|
-        ^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline `do...end` block.
+        ^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline `do...end` block
           process(item)
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -217,10 +217,10 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         items.each do
-        ^^^^^^^^^^^^^ Add empty line before multiline `do...end` block.
+        ^^^^^^^^^^^^^ Add empty line before multiline `do...end` block
           process(_1)
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -278,7 +278,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         sig do
-        ^^^^^^ Add empty line before multiline `do...end` block.
+        ^^^^^^ Add empty line before multiline `do...end` block
           params(x: Integer)
             .returns(String)
         end
@@ -319,7 +319,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         class MyService
           some_code
           sig do
-          ^^^^^^ Add empty line before multiline `do...end` block.
+          ^^^^^^ Add empty line before multiline `do...end` block
             params(name: String)
               .returns(User)
           end
@@ -422,7 +422,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         result = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
 
@@ -442,7 +442,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         self.values = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
 
@@ -485,7 +485,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
             arr << key.to_s
           end
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         messages.join(". ")
       RUBY
 
@@ -535,7 +535,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         else
           qux
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         # This is a comment
         foo = bar
       RUBY
@@ -584,7 +584,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         task :my_task do
           something
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         other_code
       RUBY
     end
@@ -611,12 +611,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         unless condition
-        ^^^^^^^^^^^^^^^^ Add empty line before multiline `unless` block.
+        ^^^^^^^^^^^^^^^^ Add empty line before multiline `unless` block
           baz
         else
           qux
         end
-        ^^^ Add empty line after multiline `unless` block.
+        ^^^ Add empty line after multiline `unless` block
         quux = corge
       RUBY
     end
@@ -812,9 +812,9 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         else
           b
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         if condition2
-        ^^^^^^^^^^^^^ Add empty line before multiline `if` block.
+        ^^^^^^^^^^^^^ Add empty line before multiline `if` block
           c
         else
           d
@@ -832,7 +832,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
           process(item)
           log(item)
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         result = compute
       RUBY
     end
@@ -868,7 +868,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         result ||= items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -879,7 +879,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         result &&= items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -890,7 +890,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         result += items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -903,7 +903,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         @result = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -914,7 +914,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         @@result = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -925,7 +925,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         $result = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -936,7 +936,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         RESULT = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -947,7 +947,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         a, b = items.map do |item|
           item.upcase
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -1113,12 +1113,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         rescue
           log_error
           if condition
-          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block
             handle_one
           else
             handle_other
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           cleanup
         end
       RUBY
@@ -1132,12 +1132,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         when :a
           setup
           if condition
-          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block
             foo
           else
             bar
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           teardown
         end
       RUBY
@@ -1153,12 +1153,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         else
           setup
           if condition
-          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block
             foo
           else
             bar
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           teardown
         end
       RUBY
@@ -1171,12 +1171,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         if outer
           setup
           if inner
-          ^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^ Add empty line before multiline `if` block
             foo
           else
             bar
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           teardown
         end
       RUBY
@@ -1191,12 +1191,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         else
           setup
           if inner
-          ^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^ Add empty line before multiline `if` block
             foo
           else
             bar
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           teardown
         end
       RUBY
@@ -1209,12 +1209,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         outer.each do |item|
           setup(item)
           if condition
-          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block
             process(item)
           else
             skip(item)
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           cleanup(item)
         end
       RUBY
@@ -1227,12 +1227,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         def self.foo
           setup
           if condition
-          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block
             bar
           else
             baz
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           cleanup
         end
       RUBY
@@ -1245,12 +1245,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         def foo
           setup
           if condition
-          ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^ Add empty line before multiline `if` block
             bar
           else
             baz
           end
-          ^^^ Add empty line after multiline `if` block.
+          ^^^ Add empty line after multiline `if` block
           cleanup
         end
       RUBY
@@ -1287,7 +1287,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         result = lambda do
           calculate_something
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -1324,11 +1324,11 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         if condition
-        ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+        ^^^^^^^^^^^^ Add empty line before multiline `if` block
           baz
           qux
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         quux = corge
       RUBY
     end
@@ -1365,10 +1365,10 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         foo = bar
         [1, 2, 3].map do
-        ^^^^^^^^^^^^^^^^ Add empty line before multiline `do...end` block.
+        ^^^^^^^^^^^^^^^^ Add empty line before multiline `do...end` block
           _1 * 2
         end
-        ^^^ Add empty line after multiline `do...end` block.
+        ^^^ Add empty line after multiline `do...end` block
         baz = qux
       RUBY
     end
@@ -1428,7 +1428,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         class MyClass
           attr_reader :foo
           setup do
-          ^^^^^^^^ Add empty line before multiline `do...end` block.
+          ^^^^^^^^ Add empty line before multiline `do...end` block
             configure
           end
         end
@@ -1441,7 +1441,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         temp_file = Tempfile.new(["import", ".csv"])
         begin
-        ^^^^^ Add empty line before multiline `begin` block.
+        ^^^^^ Add empty line before multiline `begin` block
           temp_file.write(data)
         rescue IOError
           handle_error
@@ -1466,7 +1466,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         rescue => e
           handle_error(e)
         end
-        ^^^ Add empty line after multiline `begin` block.
+        ^^^ Add empty line after multiline `begin` block
         next_statement
       RUBY
 
@@ -1485,12 +1485,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         setup_code
         begin
-        ^^^^^ Add empty line before multiline `begin` block.
+        ^^^^^ Add empty line before multiline `begin` block
           risky_operation
         rescue => e
           handle_error(e)
         end
-        ^^^ Add empty line after multiline `begin` block.
+        ^^^ Add empty line after multiline `begin` block
         cleanup_code
       RUBY
     end
@@ -1553,12 +1553,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         setup_code
         begin
-        ^^^^^ Add empty line before multiline `begin` block.
+        ^^^^^ Add empty line before multiline `begin` block
           risky_operation
         ensure
           cleanup
         end
-        ^^^ Add empty line after multiline `begin` block.
+        ^^^ Add empty line after multiline `begin` block
         next_code
       RUBY
     end
@@ -1567,14 +1567,14 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         setup_code
         begin
-        ^^^^^ Add empty line before multiline `begin` block.
+        ^^^^^ Add empty line before multiline `begin` block
           risky_operation
         rescue => e
           handle_error(e)
         ensure
           cleanup
         end
-        ^^^ Add empty line after multiline `begin` block.
+        ^^^ Add empty line after multiline `begin` block
         next_code
       RUBY
     end
@@ -1598,7 +1598,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         rescue => e
           handle_error(e)
         end
-        ^^^ Add empty line after multiline `begin` block.
+        ^^^ Add empty line after multiline `begin` block
         # This is a comment
         next_code
       RUBY
@@ -1625,12 +1625,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         def foo
           setup
           begin
-          ^^^^^ Add empty line before multiline `begin` block.
+          ^^^^^ Add empty line before multiline `begin` block
             risky_operation
           rescue => e
             handle_error(e)
           end
-          ^^^ Add empty line after multiline `begin` block.
+          ^^^ Add empty line after multiline `begin` block
           cleanup
         end
       RUBY
@@ -1683,7 +1683,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
             rescue => e
               fallback_value
             end
-            ^^^ Add empty line after multiline `begin` block.
+            ^^^ Add empty line after multiline `begin` block
             cleanup
           end
         RUBY
@@ -1697,7 +1697,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
             rescue => e
               fallback_value
             end
-            ^^^ Add empty line after multiline `begin` block.
+            ^^^ Add empty line after multiline `begin` block
             cleanup
           end
         RUBY
@@ -1722,12 +1722,12 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
           def foo
             setup
             @foo ||= begin
-                     ^^^^^ Add empty line before multiline `begin` block.
+                     ^^^^^ Add empty line before multiline `begin` block
               risky_operation
             rescue => e
               handle_error(e)
             end
-            ^^^ Add empty line after multiline `begin` block.
+            ^^^ Add empty line after multiline `begin` block
             cleanup
           end
         RUBY
@@ -1753,7 +1753,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         if condition
           do_something
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         result = compute(x) # some note
       RUBY
     end
@@ -1762,7 +1762,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
       expect_offense(<<~RUBY)
         result = compute(x) # some note
         if condition
-        ^^^^^^^^^^^^ Add empty line before multiline `if` block.
+        ^^^^^^^^^^^^ Add empty line before multiline `if` block
           do_something
         end
       RUBY
@@ -1773,7 +1773,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         if condition
           do_something
         end
-        ^^^ Add empty line after multiline `if` block.
+        ^^^ Add empty line after multiline `if` block
         # standalone comment
         result = compute(x)
       RUBY
@@ -1802,7 +1802,7 @@ RSpec.describe RuboCop::Cop::Sane::EmptyLinesAroundMultilineBlock, :config do
         ensure
           cleanup
           if Rails.env.development?
-          ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline `if` block.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Add empty line before multiline `if` block
             puts "Hello"
           end
         end

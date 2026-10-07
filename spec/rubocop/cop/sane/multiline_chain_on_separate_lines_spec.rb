@@ -5,44 +5,44 @@ RSpec.describe RuboCop::Cop::Sane::MultilineChainOnSeparateLines, :config do
     it "registers offenses for both .find and .click" do
       expect_offense(<<~RUBY)
         browser.find(
-               ^ Place each method call in a multiline chain on a separate line with a leading dot.
+               ^ Place each method call in a multiline chain on a separate line with a leading dot
           "selector",
           text: "foo",
         ).click
-         ^ Place each method call in a multiline chain on a separate line with a leading dot.
+         ^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
     end
 
     it "registers offenses for method after multiline chain" do
       expect_offense(<<~RUBY)
         result.where(
-              ^ Place each method call in a multiline chain on a separate line with a leading dot.
+              ^ Place each method call in a multiline chain on a separate line with a leading dot
           active: true,
         ).order(:name)
-         ^ Place each method call in a multiline chain on a separate line with a leading dot.
+         ^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
     end
 
     it "registers offenses for multiple chained methods after multiline calls" do
       expect_offense(<<~RUBY)
         foo.bar(
-           ^ Place each method call in a multiline chain on a separate line with a leading dot.
+           ^ Place each method call in a multiline chain on a separate line with a leading dot
           arg1,
         ).baz(
-         ^ Place each method call in a multiline chain on a separate line with a leading dot.
+         ^ Place each method call in a multiline chain on a separate line with a leading dot
           arg2,
         ).qux
-         ^ Place each method call in a multiline chain on a separate line with a leading dot.
+         ^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
     end
 
     it "registers offenses with safe navigation" do
       expect_offense(<<~RUBY)
         browser&.find(
-               ^^ Place each method call in a multiline chain on a separate line with a leading dot.
+               ^^ Place each method call in a multiline chain on a separate line with a leading dot
           "selector",
         )&.click
-         ^^ Place each method call in a multiline chain on a separate line with a leading dot.
+         ^^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
     end
 
@@ -52,7 +52,7 @@ RSpec.describe RuboCop::Cop::Sane::MultilineChainOnSeparateLines, :config do
           .where(
             active: true,
           ).order(:name)
-           ^ Place each method call in a multiline chain on a separate line with a leading dot.
+           ^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
 
       expect_correction(<<~RUBY)
@@ -70,7 +70,7 @@ RSpec.describe RuboCop::Cop::Sane::MultilineChainOnSeparateLines, :config do
           &.where(
             active: true,
           )&.order(:name)
-           ^^ Place each method call in a multiline chain on a separate line with a leading dot.
+           ^^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
 
       expect_correction(<<~RUBY)
@@ -87,10 +87,10 @@ RSpec.describe RuboCop::Cop::Sane::MultilineChainOnSeparateLines, :config do
     it "registers an offense when method is on same line as receiver and chained" do
       expect_offense(<<~RUBY)
         browser.find(
-               ^ Place each method call in a multiline chain on a separate line with a leading dot.
+               ^ Place each method call in a multiline chain on a separate line with a leading dot
           "selector",
         ).click
-         ^ Place each method call in a multiline chain on a separate line with a leading dot.
+         ^ Place each method call in a multiline chain on a separate line with a leading dot
       RUBY
     end
 
@@ -171,10 +171,10 @@ RSpec.describe RuboCop::Cop::Sane::MultilineChainOnSeparateLines, :config do
       expect_offense(<<~RUBY)
         def test
           browser.find(
-                 ^ Place each method call in a multiline chain on a separate line with a leading dot.
+                 ^ Place each method call in a multiline chain on a separate line with a leading dot
             "selector",
           ).click
-           ^ Place each method call in a multiline chain on a separate line with a leading dot.
+           ^ Place each method call in a multiline chain on a separate line with a leading dot
         end
       RUBY
 
@@ -196,7 +196,7 @@ RSpec.describe RuboCop::Cop::Sane::MultilineChainOnSeparateLines, :config do
             .where(
               active: true,
             ).order(:name)
-             ^ Place each method call in a multiline chain on a separate line with a leading dot.
+             ^ Place each method call in a multiline chain on a separate line with a leading dot
         end
       RUBY
 
